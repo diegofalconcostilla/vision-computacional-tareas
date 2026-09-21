@@ -1,0 +1,115 @@
+{
+  "imagen": {
+    "tam": [
+      704,
+      584
+    ],
+    "semilla_fila_col": [
+      315,
+      251
+    ],
+    "tumor_pct": 5.15,
+    "otsu2_umbral": 72
+  },
+  "sin_ruido": {
+    "Otsu (2 clases)": {
+      "dice": 0.229,
+      "iou": 0.129,
+      "precision": 0.129,
+      "exhaustividad": 0.999,
+      "area_pct": 39.849,
+      "umbral": 72
+    },
+    "Multi-Otsu (3 clases)": {
+      "dice": 0.924,
+      "iou": 0.859,
+      "precision": 0.954,
+      "exhaustividad": 0.896,
+      "area_pct": 4.84,
+      "umbrales": [
+        57,
+        151
+      ]
+    },
+    "K-means (K=4)": {
+      "dice": 0.912,
+      "iou": 0.838,
+      "precision": 0.962,
+      "exhaustividad": 0.866,
+      "area_pct": 4.641,
+      "centros": [
+        20,
+        72,
+        109,
+        215
+      ]
+    },
+    "Mean Shift": {
+      "dice": 0.927,
+      "iou": 0.865,
+      "precision": 0.954,
+      "exhaustividad": 0.902,
+      "area_pct": 4.875,
+      "colores_distintos": 239
+    },
+    "SLIC (350 superpíxeles)": {
+      "dice": 0.886,
+      "iou": 0.795,
+      "precision": 0.922,
+      "exhaustividad": 0.852,
+      "area_pct": 4.763,
+      "superpixeles": 305
+    },
+    "Watershed con marcadores": {
+      "dice": 0.936,
+      "iou": 0.879,
+      "precision": 0.993,
+      "exhaustividad": 0.885,
+      "area_pct": 4.594
+    }
+  },
+  "sobresegmentacion": {
+    "watershed_sin_marcadores_regiones": 11713,
+    "slic_superpixeles": 305
+  },
+  "ruido": {
+    "sigmas": [
+      0,
+      10,
+      25,
+      40
+    ],
+    "dice": {
+      "Multi-Otsu (3 clases)": [
+        0.924,
+        0.918,
+        0.905,
+        0.895
+      ],
+      "K-means (K=4)": [
+        0.912,
+        0.902,
+        0.88,
+        0.79
+      ],
+      "Mean Shift": [
+        0.927,
+        0.921,
+        0.908,
+        0.885
+      ],
+      "SLIC (350 superpíxeles)": [
+        0.886,
+        0.914,
+        0.922,
+        0.913
+      ],
+      "Watershed con marcadores": [
+        0.936,
+        0.917,
+        0.93,
+        0.87
+      ]
+    }
+  }
+}

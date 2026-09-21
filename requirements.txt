@@ -1,0 +1,14 @@
+numpy
+scipy
+matplotlib
+pillow
+opencv-python-headless
+scikit-image
+scikit-learn
+PyWavelets
+pymupdf
+pypdf
+nbformat
+nbclient
+nbconvert
+ipykernel

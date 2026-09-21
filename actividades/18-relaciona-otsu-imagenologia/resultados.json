@@ -1,0 +1,175 @@
+{
+  "imagenes": {
+    "Radiografía de tórax": {
+      "umbral": 113,
+      "media_clase_oscura": 72.3,
+      "media_clase_clara": 154.8,
+      "peso_clase_oscura_pct": 51.2,
+      "peso_clase_clara_pct": 48.8,
+      "eta": 0.748,
+      "pulmones_pct_imagen": 43.5
+    },
+    "TC de cráneo (corte axial)": {
+      "umbral": 76,
+      "media_clase_oscura": 4.0,
+      "media_clase_clara": 148.8,
+      "peso_clase_oscura_pct": 51.3,
+      "peso_clase_clara_pct": 48.7,
+      "eta": 0.77,
+      "multiotsu_umbrales": [
+        60,
+        182
+      ],
+      "multiotsu_pct_clases": [
+        49.6,
+        40.1,
+        10.3
+      ]
+    },
+    "Microscopía de fluorescencia (núcleos)": {
+      "umbral": 87,
+      "media_clase_oscura": 1.8,
+      "media_clase_clara": 173.8,
+      "peso_clase_oscura_pct": 95.8,
+      "peso_clase_clara_pct": 4.2,
+      "eta": 0.848,
+      "nucleos": 129,
+      "area_mediana_px": 482.0,
+      "fondo_pct": 95.8
+    }
+  },
+  "estabilidad_ruido": {
+    "Radiografía de tórax": {
+      "σ=10": {
+        "sin suavizar": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.956
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.988
+        },
+        "mediana 5×5": {
+          "umbral": 112,
+          "dice_vs_limpia": 0.985
+        }
+      },
+      "σ=25": {
+        "sin suavizar": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.882
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.977
+        },
+        "mediana 5×5": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.971
+        }
+      },
+      "σ=40": {
+        "sin suavizar": {
+          "umbral": 114,
+          "dice_vs_limpia": 0.807
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 114,
+          "dice_vs_limpia": 0.965
+        },
+        "mediana 5×5": {
+          "umbral": 113,
+          "dice_vs_limpia": 0.955
+        }
+      }
+    },
+    "TC de cráneo (corte axial)": {
+      "σ=10": {
+        "sin suavizar": {
+          "umbral": 78,
+          "dice_vs_limpia": 0.987
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 75,
+          "dice_vs_limpia": 0.978
+        },
+        "mediana 5×5": {
+          "umbral": 75,
+          "dice_vs_limpia": 0.982
+        }
+      },
+      "σ=25": {
+        "sin suavizar": {
+          "umbral": 86,
+          "dice_vs_limpia": 0.938
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 78,
+          "dice_vs_limpia": 0.978
+        },
+        "mediana 5×5": {
+          "umbral": 76,
+          "dice_vs_limpia": 0.981
+        }
+      },
+      "σ=40": {
+        "sin suavizar": {
+          "umbral": 96,
+          "dice_vs_limpia": 0.863
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 81,
+          "dice_vs_limpia": 0.977
+        },
+        "mediana 5×5": {
+          "umbral": 76,
+          "dice_vs_limpia": 0.979
+        }
+      }
+    },
+    "Microscopía de fluorescencia (núcleos)": {
+      "σ=10": {
+        "sin suavizar": {
+          "umbral": 90,
+          "dice_vs_limpia": 0.967
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 85,
+          "dice_vs_limpia": 0.979
+        },
+        "mediana 5×5": {
+          "umbral": 86,
+          "dice_vs_limpia": 0.98
+        }
+      },
+      "σ=25": {
+        "sin suavizar": {
+          "umbral": 93,
+          "dice_vs_limpia": 0.922
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 89,
+          "dice_vs_limpia": 0.972
+        },
+        "mediana 5×5": {
+          "umbral": 87,
+          "dice_vs_limpia": 0.97
+        }
+      },
+      "σ=40": {
+        "sin suavizar": {
+          "umbral": 79,
+          "dice_vs_limpia": 0.703
+        },
+        "gaussiano σ=1.5": {
+          "umbral": 92,
+          "dice_vs_limpia": 0.962
+        },
+        "mediana 5×5": {
+          "umbral": 87,
+          "dice_vs_limpia": 0.959
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "reales": {
+    "Recibo arrugado en mesa oscura (Vienna)": {
+      "umbral_otsu": 86,
+      "iou_mascaras_otsu_canny": 0.782,
+      "otsu": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 0,
+        "area_doc_pct": 35.2
+      },
+      "canny": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 1,
+        "area_doc_pct": 50.0
+      },
+      "texto_pct_adaptativa": 11.5,
+      "texto_pct_otsu_global": 50.7,
+      "plano_tam": [
+        335,
+        849
+      ]
+    },
+    "Recibo sobre granito moteado (Bankia)": {
+      "umbral_otsu": 91,
+      "iou_mascaras_otsu_canny": 0.961,
+      "otsu": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 0,
+        "area_doc_pct": 35.5
+      },
+      "canny": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 0,
+        "area_doc_pct": 37.6
+      },
+      "texto_pct_adaptativa": 10.7,
+      "texto_pct_otsu_global": 11.6,
+      "plano_tam": [
+        417,
+        508
+      ]
+    },
+    "Recibo inclinado y recortado (Alves)": {
+      "umbral_otsu": 72,
+      "iou_mascaras_otsu_canny": 0.228,
+      "otsu": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 3,
+        "area_doc_pct": 50.4
+      },
+      "canny": {
+        "cuadrilatero_exacto": true,
+        "esquinas_en_el_borde_de_la_imagen": 0,
+        "area_doc_pct": 11.2
+      },
+      "texto_pct_adaptativa": 13.1,
+      "texto_pct_otsu_global": 19.4,
+      "plano_tam": [
+        608,
+        597
+      ]
+    }
+  },
+  "deteccion": {
+    "oscuro|0.0": {
+      "otsu": {
+        "error_medio_px": 6.4,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 2.7,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "oscuro|0.3": {
+      "otsu": {
+        "error_medio_px": 6.3,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 2.7,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "oscuro|0.6": {
+      "otsu": {
+        "error_medio_px": 6.0,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 2.7,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "granito|0.0": {
+      "otsu": {
+        "error_medio_px": 8.0,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 30.6,
+        "exito_pct": 50.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "granito|0.3": {
+      "otsu": {
+        "error_medio_px": 25.0,
+        "exito_pct": 50.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 78.2,
+        "exito_pct": 12.5,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "granito|0.6": {
+      "otsu": {
+        "error_medio_px": 77.8,
+        "exito_pct": 0.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 181.2,
+        "exito_pct": 0.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "madera|0.0": {
+      "otsu": {
+        "error_medio_px": 6.5,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 2.9,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "madera|0.3": {
+      "otsu": {
+        "error_medio_px": 6.1,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 2.9,
+        "exito_pct": 100.0,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    },
+    "madera|0.6": {
+      "otsu": {
+        "error_medio_px": 12.6,
+        "exito_pct": 87.5,
+        "cuadrilatero_exacto_pct": 100.0
+      },
+      "canny": {
+        "error_medio_px": 9.8,
+        "exito_pct": 87.5,
+        "cuadrilatero_exacto_pct": 100.0
+      }
+    }
+  },
+  "binarizacion": {
+    "Umbral fijo 128": {
+      "0.0": {
+        "f1": 0.892,
+        "falsos_positivos_fondo_pct": 0.0
+      },
+      "0.3": {
+        "f1": 0.979,
+        "falsos_positivos_fondo_pct": 0.0
+      },
+      "0.6": {
+        "f1": 0.516,
+        "falsos_positivos_fondo_pct": 7.24
+      }
+    },
+    "Otsu global": {
+      "0.0": {
+        "f1": 0.966,
+        "falsos_positivos_fondo_pct": 0.05
+      },
+      "0.3": {
+        "f1": 0.56,
+        "falsos_positivos_fondo_pct": 10.72
+      },
+      "0.6": {
+        "f1": 0.338,
+        "falsos_positivos_fondo_pct": 21.31
+      }
+    },
+    "Adaptativo gaussiano": {
+      "0.0": {
+        "f1": 0.973,
+        "falsos_positivos_fondo_pct": 0.19
+      },
+      "0.3": {
+        "f1": 0.979,
+        "falsos_positivos_fondo_pct": 0.13
+      },
+      "0.6": {
+        "f1": 0.985,
+        "falsos_positivos_fondo_pct": 0.09
+      }
+    },
+    "Sauvola": {
+      "0.0": {
+        "f1": 0.981,
+        "falsos_positivos_fondo_pct": 0.04
+      },
+      "0.3": {
+        "f1": 0.983,
+        "falsos_positivos_fondo_pct": 0.03
+      },
+      "0.6": {
+        "f1": 0.985,
+        "falsos_positivos_fondo_pct": 0.03
+      }
+    },
+    "Adaptativo + apertura 2×2": {
+      "0.0": {
+        "f1": 0.864,
+        "falsos_positivos_fondo_pct": 0.28
+      },
+      "0.3": {
+        "f1": 0.871,
+        "falsos_positivos_fondo_pct": 0.2
+      },
+      "0.6": {
+        "f1": 0.88,
+        "falsos_positivos_fondo_pct": 0.13
+      }
+    }
+  },
+  "pipeline_completo_f1": {
+    "0.0": {
+      "otsu": 0.782,
+      "canny": 0.833,
+      "mejor_de_ambos": 0.877
+    },
+    "0.3": {
+      "otsu": 0.595,
+      "canny": 0.838,
+      "mejor_de_ambos": 0.838
+    },
+    "0.6": {
+      "otsu": 0.515,
+      "canny": 0.599,
+      "mejor_de_ambos": 0.602
+    }
+  }
+}

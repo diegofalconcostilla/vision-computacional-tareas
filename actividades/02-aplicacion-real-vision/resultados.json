@@ -1,0 +1,130 @@
+{
+  "imagen": {
+    "ancho": 3840,
+    "alto": 2160
+  },
+  "exp1_muestreo": [
+    {
+      "resolucion": "3840x2160",
+      "megapixeles": 8.294,
+      "ancho_auto_px": 138.0
+    },
+    {
+      "resolucion": "1920x1080",
+      "megapixeles": 2.074,
+      "ancho_auto_px": 69.0
+    },
+    {
+      "resolucion": "960x540",
+      "megapixeles": 0.518,
+      "ancho_auto_px": 34.5
+    },
+    {
+      "resolucion": "480x270",
+      "megapixeles": 0.13,
+      "ancho_auto_px": 17.2
+    },
+    {
+      "resolucion": "240x135",
+      "megapixeles": 0.032,
+      "ancho_auto_px": 8.6
+    }
+  ],
+  "exp2_cuantizacion": [
+    {
+      "bits": 8,
+      "niveles": 256,
+      "psnr_db": null,
+      "megabytes_1080p_rgb": 6.22
+    },
+    {
+      "bits": 5,
+      "niveles": 32,
+      "psnr_db": 40.5,
+      "megabytes_1080p_rgb": 3.89
+    },
+    {
+      "bits": 4,
+      "niveles": 16,
+      "psnr_db": 34.5,
+      "megabytes_1080p_rgb": 3.11
+    },
+    {
+      "bits": 3,
+      "niveles": 8,
+      "psnr_db": 29.0,
+      "megabytes_1080p_rgb": 2.33
+    },
+    {
+      "bits": 2,
+      "niveles": 4,
+      "psnr_db": 21.0,
+      "megabytes_1080p_rgb": 1.56
+    }
+  ],
+  "exp3_bayer": {
+    "psnr_demosaico_db": 24.0,
+    "error_maximo": 0.582,
+    "fraccion_valores_interpolados": 0.667
+  },
+  "exp4_exposicion": [
+    {
+      "caso": "Exposición −2 EV",
+      "saturado_pct": 0.0,
+      "oscuro_pct": 3.29,
+      "contraste_cielo": 0.0642,
+      "contraste_arboles": 0.828
+    },
+    {
+      "caso": "Exposición 0 EV",
+      "saturado_pct": 0.0,
+      "oscuro_pct": 0.2,
+      "contraste_cielo": 0.0582,
+      "contraste_arboles": 0.7443
+    },
+    {
+      "caso": "Exposición +2 EV",
+      "saturado_pct": 35.5,
+      "oscuro_pct": 0.03,
+      "contraste_cielo": 0.038,
+      "contraste_arboles": 0.6107
+    },
+    {
+      "caso": "Fusión de las 3 (Mertens)",
+      "saturado_pct": 0.0,
+      "oscuro_pct": 1.85,
+      "contraste_cielo": 0.0539,
+      "contraste_arboles": 0.8227
+    }
+  ],
+  "exp5_bordes": [
+    {
+      "caso": "Limpia",
+      "psnr_db": null,
+      "correlacion_bordes": 1.0,
+      "bordes_falsos_pct": 0.0,
+      "bordes_perdidos_pct": 0.0
+    },
+    {
+      "caso": "Ruido σ=0.03",
+      "psnr_db": 30.4,
+      "correlacion_bordes": 0.981,
+      "bordes_falsos_pct": 8.5,
+      "bordes_perdidos_pct": 6.3
+    },
+    {
+      "caso": "Ruido σ=0.10",
+      "psnr_db": 20.2,
+      "correlacion_bordes": 0.826,
+      "bordes_falsos_pct": 40.9,
+      "bordes_perdidos_pct": 14.7
+    },
+    {
+      "caso": "Cuantizada a 3 bits",
+      "psnr_db": 27.5,
+      "correlacion_bordes": 0.928,
+      "bordes_falsos_pct": 15.7,
+      "bordes_perdidos_pct": 11.4
+    }
+  ]
+}

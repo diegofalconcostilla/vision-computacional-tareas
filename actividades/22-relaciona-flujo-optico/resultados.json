@@ -1,0 +1,190 @@
+{
+  "video": {
+    "cuadros": 50,
+    "alto": 414,
+    "ancho": 458,
+    "fps_original": 25
+  },
+  "sparse_puntos_iniciales": 200,
+  "sparse": {
+    "supervivientes_ultimo": 189,
+    "supervivientes_por_cuadro_min": 189,
+    "deriva_media_px": 1.41,
+    "deriva_mediana_px": 0.5,
+    "desplazamiento_max_mediana_px": 2.94,
+    "desplazamiento_max_p95_px": 23.11,
+    "tiempo_ms_por_par": 0.92
+  },
+  "dense": {
+    "tiempo_ms_por_par": 21.42,
+    "mag_media_global_px": 0.341,
+    "mag_media_roi_px": 0.583,
+    "mag_max_p99_px": 1.76,
+    "curva_roi_min": 0.41,
+    "curva_roi_max": 0.795,
+    "cuadro_max_movimiento": 36,
+    "cuadro_min_movimiento": 23,
+    "roi_pct": 40.0,
+    "deriva_ciclo_puntos_px_media": 1.52
+  },
+  "acuerdo": {
+    "cuadro": 20,
+    "puntos": 198,
+    "dif_media_px": 1.16,
+    "dif_mediana_px": 0.68,
+    "movimiento_medio_px": 5.64,
+    "correlacion_desplazamientos": 0.985
+  },
+  "validacion_amplitud": [
+    {
+      "lk_epe_media": 0.05,
+      "lk_puntos_ok": 200,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.055,
+      "fb_epe_imagen": 0.086,
+      "fb_epe_p90": 0.187,
+      "mov_max": 0.737,
+      "mov_medio": 0.339,
+      "s": 0.5
+    },
+    {
+      "lk_epe_media": 0.053,
+      "lk_puntos_ok": 200,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.057,
+      "fb_epe_imagen": 0.147,
+      "fb_epe_p90": 0.347,
+      "mov_max": 1.474,
+      "mov_medio": 0.679,
+      "s": 1
+    },
+    {
+      "lk_epe_media": 0.06,
+      "lk_puntos_ok": 200,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.068,
+      "fb_epe_imagen": 0.268,
+      "fb_epe_p90": 0.696,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "s": 2
+    },
+    {
+      "lk_epe_media": 0.085,
+      "lk_puntos_ok": 200,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.081,
+      "fb_epe_imagen": 0.54,
+      "fb_epe_p90": 1.477,
+      "mov_max": 5.898,
+      "mov_medio": 2.715,
+      "s": 4
+    },
+    {
+      "lk_epe_media": 0.135,
+      "lk_puntos_ok": 199,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.127,
+      "fb_epe_imagen": 1.205,
+      "fb_epe_p90": 3.655,
+      "mov_max": 11.796,
+      "mov_medio": 5.43,
+      "s": 8
+    },
+    {
+      "lk_epe_media": 0.25,
+      "lk_puntos_ok": 197,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.334,
+      "fb_epe_imagen": 3.01,
+      "fb_epe_p90": 9.55,
+      "mov_max": 23.592,
+      "mov_medio": 10.861,
+      "s": 16
+    },
+    {
+      "lk_epe_media": 0.473,
+      "lk_puntos_ok": 188,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 6.628,
+      "fb_epe_imagen": 13.849,
+      "fb_epe_p90": 43.101,
+      "mov_max": 47.183,
+      "mov_medio": 21.722,
+      "s": 32
+    }
+  ],
+  "farneback_ventana": [
+    {
+      "s": 16,
+      "mov_max": 23.6,
+      "base (winsize 15)": 3.01,
+      "winsize 31": 2.274,
+      "winsize 51": 1.984
+    },
+    {
+      "s": 32,
+      "mov_max": 47.2,
+      "base (winsize 15)": 13.849,
+      "winsize 31": 5.371,
+      "winsize 51": 5.146
+    }
+  ],
+  "validacion_ruido": [
+    {
+      "lk_epe_media": 0.06,
+      "lk_puntos_ok": 200,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.068,
+      "fb_epe_imagen": 0.268,
+      "fb_epe_p90": 0.696,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "ruido": 0
+    },
+    {
+      "lk_epe_media": 0.108,
+      "lk_puntos_ok": 198,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.137,
+      "fb_epe_imagen": 0.358,
+      "fb_epe_p90": 0.739,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "ruido": 5
+    },
+    {
+      "lk_epe_media": 0.221,
+      "lk_puntos_ok": 197,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.266,
+      "fb_epe_imagen": 0.522,
+      "fb_epe_p90": 1.012,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "ruido": 10
+    },
+    {
+      "lk_epe_media": 0.58,
+      "lk_puntos_ok": 188,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.552,
+      "fb_epe_imagen": 0.838,
+      "fb_epe_p90": 1.62,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "ruido": 20
+    },
+    {
+      "lk_epe_media": 0.873,
+      "lk_puntos_ok": 177,
+      "lk_puntos": 200,
+      "fb_epe_mismos_puntos": 0.822,
+      "fb_epe_imagen": 1.102,
+      "fb_epe_p90": 2.108,
+      "mov_max": 2.949,
+      "mov_medio": 1.358,
+      "ruido": 30
+    }
+  ]
+}

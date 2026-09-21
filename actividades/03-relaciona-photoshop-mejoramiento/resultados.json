@@ -1,0 +1,122 @@
+{
+  "etapas": {
+    "0. Original": {
+      "media": 43.4,
+      "desviacion": 54.4,
+      "entropia": 6.69,
+      "negro_pct": 26.6,
+      "saturado_pct": 0.39,
+      "sigma_ruido": 3.85,
+      "snr": 11.3,
+      "nitidez_lap": 1637.6
+    },
+    "1. Reducir ruido": {
+      "media": 42.6,
+      "desviacion": 54.2,
+      "entropia": 6.59,
+      "negro_pct": 27.6,
+      "saturado_pct": 0.18,
+      "sigma_ruido": 1.22,
+      "snr": 34.9,
+      "nitidez_lap": 1214.0
+    },
+    "2. Niveles + gamma": {
+      "media": 68.2,
+      "desviacion": 60.5,
+      "entropia": 7.32,
+      "negro_pct": 3.1,
+      "saturado_pct": 0.73,
+      "sigma_ruido": 2.33,
+      "snr": 29.3,
+      "nitidez_lap": 1409.6
+    },
+    "3. Ecualización local (CLAHE)": {
+      "media": 80.7,
+      "desviacion": 62.7,
+      "entropia": 7.54,
+      "negro_pct": 1.3,
+      "saturado_pct": 0.81,
+      "sigma_ruido": 3.77,
+      "snr": 21.4,
+      "nitidez_lap": 2290.0
+    },
+    "4. Máscara de enfoque": {
+      "media": 80.4,
+      "desviacion": 65.5,
+      "entropia": 7.62,
+      "negro_pct": 4.2,
+      "saturado_pct": 1.3,
+      "sigma_ruido": 5.53,
+      "snr": 14.5,
+      "nitidez_lap": 5210.5
+    }
+  },
+  "variantes": {
+    "Original": {
+      "media": 43.4,
+      "desviacion": 54.4,
+      "entropia": 6.69,
+      "negro_pct": 26.6,
+      "saturado_pct": 0.39,
+      "sigma_ruido": 3.85,
+      "snr": 11.3,
+      "nitidez_lap": 1637.6
+    },
+    "Sin reducir ruido": {
+      "media": 83.9,
+      "desviacion": 66.7,
+      "entropia": 7.71,
+      "negro_pct": 7.7,
+      "saturado_pct": 1.51,
+      "sigma_ruido": 16.31,
+      "snr": 5.1,
+      "nitidez_lap": 11261.4
+    },
+    "Reducir ruido después de los niveles": {
+      "media": 83.0,
+      "desviacion": 64.5,
+      "entropia": 7.66,
+      "negro_pct": 6.8,
+      "saturado_pct": 1.03,
+      "sigma_ruido": 7.1,
+      "snr": 11.7,
+      "nitidez_lap": 6276.2
+    },
+    "Reducir ruido al inicio (elegida)": {
+      "media": 80.4,
+      "desviacion": 65.5,
+      "entropia": 7.62,
+      "negro_pct": 4.2,
+      "saturado_pct": 1.3,
+      "sigma_ruido": 5.53,
+      "snr": 14.5,
+      "nitidez_lap": 5210.5
+    }
+  },
+  "canny": {
+    "Original": {
+      "bordes_pct": 7.51,
+      "componentes": 1881,
+      "diminutos_pct": 18.1,
+      "longitud_mediana_px": 19.0
+    },
+    "Sin reducir ruido": {
+      "bordes_pct": 23.8,
+      "componentes": 8264,
+      "diminutos_pct": 23.2,
+      "longitud_mediana_px": 13.0
+    },
+    "Reducir ruido después de los niveles": {
+      "bordes_pct": 15.69,
+      "componentes": 5301,
+      "diminutos_pct": 21.0,
+      "longitud_mediana_px": 14.0
+    },
+    "Reducir ruido al inicio (elegida)": {
+      "bordes_pct": 12.01,
+      "componentes": 3545,
+      "diminutos_pct": 29.6,
+      "longitud_mediana_px": 11.0
+    }
+  }
+}

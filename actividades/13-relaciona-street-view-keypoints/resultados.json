@@ -1,0 +1,302 @@
+{
+  "harris": {
+    "metodo": "harris",
+    "kp1": 539,
+    "kp2": 468,
+    "repetibilidad": 0.813,
+    "matches": 285,
+    "correctos": 283,
+    "precision": 0.993,
+    "inliers_ransac": 283,
+    "error_H_px": 0.177,
+    "t_deteccion_ms": 31.656,
+    "t_matching_ms": 1.031
+  },
+  "orb": {
+    "metodo": "orb",
+    "kp1": 2000,
+    "kp2": 1993,
+    "repetibilidad": 0.784,
+    "matches": 900,
+    "correctos": 849,
+    "precision": 0.943,
+    "inliers_ransac": 851,
+    "error_H_px": 1.352,
+    "t_deteccion_ms": 178.711,
+    "t_matching_ms": 3.078
+  },
+  "sift": {
+    "metodo": "sift",
+    "kp1": 1750,
+    "kp2": 1812,
+    "repetibilidad": 0.743,
+    "matches": 854,
+    "correctos": 812,
+    "precision": 0.951,
+    "inliers_ransac": 812,
+    "error_H_px": 0.123,
+    "t_deteccion_ms": 100.459,
+    "t_matching_ms": 2.907
+  },
+  "regiones_sift": {
+    "filas": 4,
+    "cols": 6,
+    "keypoints": [
+      [
+        0,
+        0,
+        0,
+        118,
+        3,
+        6
+      ],
+      [
+        2,
+        1,
+        0,
+        88,
+        0,
+        1
+      ],
+      [
+        53,
+        40,
+        9,
+        55,
+        52,
+        111
+      ],
+      [
+        188,
+        187,
+        167,
+        191,
+        260,
+        218
+      ]
+    ],
+    "correctos": [
+      [
+        0,
+        0,
+        0,
+        77,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        58,
+        0,
+        0
+      ],
+      [
+        17,
+        27,
+        6,
+        32,
+        35,
+        6
+      ],
+      [
+        108,
+        116,
+        105,
+        86,
+        113,
+        26
+      ]
+    ],
+    "erroneos": [
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        4,
+        0,
+        2
+      ],
+      [
+        5,
+        4,
+        3,
+        1,
+        8,
+        3
+      ]
+    ]
+  },
+  "barrido_yaw": {
+    "harris": [
+      {
+        "yaw": 2,
+        "correctos": 370,
+        "matches": 375,
+        "precision": 0.987,
+        "repetibilidad": 0.869
+      },
+      {
+        "yaw": 5,
+        "correctos": 325,
+        "matches": 335,
+        "precision": 0.97,
+        "repetibilidad": 0.814
+      },
+      {
+        "yaw": 10,
+        "correctos": 290,
+        "matches": 296,
+        "precision": 0.98,
+        "repetibilidad": 0.821
+      },
+      {
+        "yaw": 15,
+        "correctos": 218,
+        "matches": 224,
+        "precision": 0.973,
+        "repetibilidad": 0.805
+      },
+      {
+        "yaw": 20,
+        "correctos": 160,
+        "matches": 164,
+        "precision": 0.976,
+        "repetibilidad": 0.796
+      },
+      {
+        "yaw": 30,
+        "correctos": 100,
+        "matches": 106,
+        "precision": 0.943,
+        "repetibilidad": 0.776
+      },
+      {
+        "yaw": 40,
+        "correctos": 61,
+        "matches": 66,
+        "precision": 0.924,
+        "repetibilidad": 0.764
+      }
+    ],
+    "orb": [
+      {
+        "yaw": 2,
+        "correctos": 1258,
+        "matches": 1330,
+        "precision": 0.946,
+        "repetibilidad": 0.899
+      },
+      {
+        "yaw": 5,
+        "correctos": 1159,
+        "matches": 1240,
+        "precision": 0.935,
+        "repetibilidad": 0.915
+      },
+      {
+        "yaw": 10,
+        "correctos": 956,
+        "matches": 1019,
+        "precision": 0.938,
+        "repetibilidad": 0.89
+      },
+      {
+        "yaw": 15,
+        "correctos": 825,
+        "matches": 884,
+        "precision": 0.933,
+        "repetibilidad": 0.873
+      },
+      {
+        "yaw": 20,
+        "correctos": 708,
+        "matches": 753,
+        "precision": 0.94,
+        "repetibilidad": 0.872
+      },
+      {
+        "yaw": 30,
+        "correctos": 485,
+        "matches": 519,
+        "precision": 0.934,
+        "repetibilidad": 0.886
+      },
+      {
+        "yaw": 40,
+        "correctos": 363,
+        "matches": 402,
+        "precision": 0.903,
+        "repetibilidad": 0.844
+      }
+    ],
+    "sift": [
+      {
+        "yaw": 2,
+        "correctos": 993,
+        "matches": 1028,
+        "precision": 0.966,
+        "repetibilidad": 0.679
+      },
+      {
+        "yaw": 5,
+        "correctos": 924,
+        "matches": 959,
+        "precision": 0.964,
+        "repetibilidad": 0.723
+      },
+      {
+        "yaw": 10,
+        "correctos": 796,
+        "matches": 843,
+        "precision": 0.944,
+        "repetibilidad": 0.704
+      },
+      {
+        "yaw": 15,
+        "correctos": 697,
+        "matches": 735,
+        "precision": 0.948,
+        "repetibilidad": 0.733
+      },
+      {
+        "yaw": 20,
+        "correctos": 569,
+        "matches": 609,
+        "precision": 0.934,
+        "repetibilidad": 0.674
+      },
+      {
+        "yaw": 30,
+        "correctos": 363,
+        "matches": 404,
+        "precision": 0.899,
+        "repetibilidad": 0.645
+      },
+      {
+        "yaw": 40,
+        "correctos": 291,
+        "matches": 348,
+        "precision": 0.836,
+        "repetibilidad": 0.661
+      }
+    ]
+  }
+}

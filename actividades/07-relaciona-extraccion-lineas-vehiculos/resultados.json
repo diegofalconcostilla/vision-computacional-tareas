@@ -1,0 +1,54 @@
+{
+  "Autopista I-75 (vehículo adelante)": {
+    "Sobel": {
+      "segmentos": 37,
+      "plausibles": 11,
+      "longitud_plausible_px": 1390,
+      "borde_pct": 8.0
+    },
+    "Prewitt": {
+      "segmentos": 37,
+      "plausibles": 11,
+      "longitud_plausible_px": 1386,
+      "borde_pct": 8.0
+    },
+    "Laplaciano": {
+      "segmentos": 38,
+      "plausibles": 9,
+      "longitud_plausible_px": 1027,
+      "borde_pct": 7.06
+    },
+    "Canny": {
+      "segmentos": 10,
+      "plausibles": 6,
+      "longitud_plausible_px": 741,
+      "borde_pct": 2.89
+    }
+  },
+  "Autopista I-10 (salida)": {
+    "Sobel": {
+      "segmentos": 29,
+      "plausibles": 11,
+      "longitud_plausible_px": 1187,
+      "borde_pct": 7.99
+    },
+    "Prewitt": {
+      "segmentos": 32,
+      "plausibles": 12,
+      "longitud_plausible_px": 1382,
+      "borde_pct": 8.0
+    },
+    "Laplaciano": {
+      "segmentos": 34,
+      "plausibles": 12,
+      "longitud_plausible_px": 1234,
+      "borde_pct": 6.75
+    },
+    "Canny": {
+      "segmentos": 10,
+      "plausibles": 3,
+      "longitud_plausible_px": 365,
+      "borde_pct": 2.47
+    }
+  }
+}

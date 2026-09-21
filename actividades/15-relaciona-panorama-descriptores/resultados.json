@@ -1,0 +1,167 @@
+{
+  "keypoints": {
+    "sift": [
+      3000,
+      3000,
+      3001
+    ],
+    "orb": [
+      3000,
+      3000,
+      3000
+    ]
+  },
+  "densidad_sift_centro": [
+    [
+      5,
+      0,
+      0,
+      5,
+      11,
+      168
+    ],
+    [
+      0,
+      0,
+      0,
+      51,
+      152,
+      159
+    ],
+    [
+      95,
+      100,
+      92,
+      181,
+      94,
+      43
+    ],
+    [
+      518,
+      262,
+      359,
+      366,
+      166,
+      173
+    ]
+  ],
+  "iluminacion": {
+    "brillos": [
+      0.25,
+      0.5,
+      1.0,
+      1.6,
+      2.5
+    ],
+    "keypoints": {
+      "sift": [
+        1969,
+        3002,
+        3000,
+        3000,
+        3000
+      ],
+      "orb": [
+        1982,
+        2944,
+        3000,
+        3000,
+        3000
+      ]
+    },
+    "correctos": {
+      "sift": [
+        1841,
+        2870,
+        3000,
+        1612,
+        386
+      ],
+      "orb": [
+        1697,
+        2765,
+        3000,
+        1446,
+        473
+      ]
+    }
+  },
+  "matching": {
+    "izquierda-centro sift": {
+      "metodo": "sift",
+      "kp1": 3000,
+      "kp2": 3000,
+      "repetibilidad": 0.777,
+      "matches": 1292,
+      "correctos": 1284,
+      "precision": 0.994,
+      "inliers_ransac": 1284,
+      "error_H_px": 0.076,
+      "t_deteccion_ms": 118.409,
+      "t_matching_ms": 7.49
+    },
+    "izquierda-centro orb": {
+      "metodo": "orb",
+      "kp1": 3000,
+      "kp2": 3000,
+      "repetibilidad": 0.914,
+      "matches": 1027,
+      "correctos": 967,
+      "precision": 0.942,
+      "inliers_ransac": 970,
+      "error_H_px": 1.359,
+      "t_deteccion_ms": 23.253,
+      "t_matching_ms": 19.158
+    },
+    "centro-derecha sift": {
+      "metodo": "sift",
+      "kp1": 3000,
+      "kp2": 3001,
+      "repetibilidad": 0.776,
+      "matches": 1350,
+      "correctos": 1336,
+      "precision": 0.99,
+      "inliers_ransac": 1336,
+      "error_H_px": 0.084,
+      "t_deteccion_ms": 116.627,
+      "t_matching_ms": 7.145
+    },
+    "centro-derecha orb": {
+      "metodo": "orb",
+      "kp1": 3000,
+      "kp2": 3000,
+      "repetibilidad": 0.884,
+      "matches": 1113,
+      "correctos": 1045,
+      "precision": 0.939,
+      "inliers_ransac": 1045,
+      "error_H_px": 0.204,
+      "t_deteccion_ms": 24.028,
+      "t_matching_ms": 5.421
+    }
+  },
+  "panorama": {
+    "tam": [
+      2244,
+      870
+    ],
+    "ganancias": [
+      1.178,
+      1.0,
+      0.901
+    ],
+    "error_homografia_px": {
+      "izquierda->centro": 0.076,
+      "derecha->centro": 0.11
+    },
+    "dif_solape_sin_compensar": 21.64,
+    "dif_solape_compensada": 3.27,
+    "t_union_s": 0.53,
+    "stitcher_ok": true,
+    "stitcher_tam": [
+      1802,
+      699
+    ],
+    "t_stitcher_s": 0.73
+  }
+}
