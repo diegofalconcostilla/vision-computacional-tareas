@@ -5,7 +5,7 @@ Uso típico:
     from herramientas.reporte import Reporte, zip_entrega
     r = Reporte("Título", "Subtítulo", carpeta=Path(__file__).parent)
     r.portada(); r.h2("1. Introducción"); r.p("Texto…"); r.fig("figuras/a.png", "Descripción")
-    r.refs([...]); r.guardar("informe_mi_tarea")
+    r.refs([...]); r.guardar("informe_mi_tarea")   # PDF + .docx editable (ver herramientas/word.py)
 """
 import html
 import os
@@ -145,11 +145,15 @@ class Reporte:
         return (f'<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>{re.sub("<[^>]+>", "", self.titulo)}'
                 f"</title><style>{CSS}</style></head><body>" + "\n".join(self.partes) + "</body></html>")
 
-    def guardar(self, nombre):
-        """Escribe <nombre>.html y <nombre>.pdf en la carpeta. Devuelve la ruta del PDF."""
+    def guardar(self, nombre, docx=True):
+        """Escribe <nombre>.html, <nombre>.pdf y (si `docx`) <nombre>.docx editable. Devuelve la ruta del PDF."""
         ruta_html = self.carpeta / f"{nombre}.html"
         ruta_html.write_text(self.html(), encoding="utf-8")
-        return html_a_pdf(ruta_html, self.carpeta / f"{nombre}.pdf")
+        pdf = html_a_pdf(ruta_html, self.carpeta / f"{nombre}.pdf")
+        if docx:
+            from .word import html_a_docx  # import diferido: word importa este módulo
+            html_a_docx(ruta_html, self.carpeta / f"{nombre}.docx")
+        return pdf
 
 
 def html_a_pdf(ruta_html, ruta_pdf, espera_js_ms=0, apaisado=False):

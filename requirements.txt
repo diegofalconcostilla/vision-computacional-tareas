@@ -12,3 +12,4 @@ nbformat
 nbclient
 nbconvert
 ipykernel
+python-docx
