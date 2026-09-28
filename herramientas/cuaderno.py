@@ -144,7 +144,7 @@ def a_pdf(nb, ruta_pdf, titulo, subtitulo="", integrantes=None, entrega="Noteboo
     """Convierte el notebook ya ejecutado a un PDF con portada (HTML incrustado + Edge sin interfaz)."""
     ruta_pdf = Path(ruta_pdf)
     exportador = HTMLExporter(template_name="classic")
-    cuerpo, _ = exportador.from_notebook_node(nb)
+    cuerpo, _ = exportador.from_notebook_node(nb, resources={"metadata": {"name": re.sub("<[^>]+>", "", titulo)}})
     integr = "<br>".join(esc(i) for i in (integrantes or INTEGRANTES))
     portada = (f'<section class="portada"><div class="curso">{esc(CURSO)}</div><h1>{titulo}</h1>'
                f'<div class="sub">{subtitulo}</div><div class="meta"><p><strong>Integrantes:</strong><br>{integr}</p>'

@@ -1,4 +1,4 @@
-"""Construye la entrega de la Práctica 2 (ecualización adaptativa de histogramas)."""
+"""Construye la entrega de la Práctica 2 (algoritmos de mejoramiento de imágenes basado por pixeles)."""
 import shutil
 import sys
 from pathlib import Path
@@ -13,7 +13,7 @@ from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
-NOMBRE = "practica_2_ecualizacion_adaptativa"
+NOMBRE = "practica_2_algoritmos_de_mejoramiento_de_imagenes_basado_por_pixeles"
 
 
 def preparar_datos():
@@ -318,9 +318,9 @@ def main():
     cu.formato_entrega(nb)  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica2_Ecualizacion_adaptativa.pdf", "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles",
+    pdf = cu.a_pdf(nb, AQUI / "Practica2_Algoritmos_de_mejoramiento_de_imagenes_basado_por_pixeles.pdf", "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles",
                    "Mosaicos, ventana deslizante (SWAHE) y CLAHE", integrantes=EQUIPO, fecha="27/9/2026")
-    n = zip_entrega(AQUI / "Practica2_Ecualizacion_adaptativa.zip", AQUI, ["codigo", pdf.name])
+    n = zip_entrega(AQUI / "Practica2_Algoritmos_de_mejoramiento_de_imagenes_basado_por_pixeles.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 
 

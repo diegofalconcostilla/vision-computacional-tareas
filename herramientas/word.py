@@ -36,7 +36,8 @@ PRACTICAS = {
     "04-practica-1-procesamiento-basico": (["practica_1_procesamiento_basico"], "Practica1_Procesamiento_basico",
         "Práctica 1. Procesamiento básico de imágenes", "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción",
         ENTREGA_EQUIPO),
-    "05-practica-2-ecualizacion-adaptativa": (["practica_2_ecualizacion_adaptativa"], "Practica2_Ecualizacion_adaptativa",
+    "05-practica-2-algoritmos-de-mejoramiento-de-imagenes-basado-por-pixeles": (
+        ["practica_2_algoritmos_de_mejoramiento_de_imagenes_basado_por_pixeles"], "Practica2_Algoritmos_de_mejoramiento_de_imagenes_basado_por_pixeles",
         "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles", "Mosaicos, ventana deslizante (SWAHE) y CLAHE",
         ENTREGA_EQUIPO),
     "06-practica-3-filtros-espaciales": (["practica_3_filtros_espaciales"], "Practica3_Filtros_espaciales",
