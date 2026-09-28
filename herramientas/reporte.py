@@ -16,6 +16,9 @@ from pathlib import Path
 
 CURSO = "Visión computacional para imágenes y video · Grupo 10"
 INTEGRANTES = ["Diego Falcón Costilla"]
+# Equipo de las prácticas en Colab (actividades en equipo de Canvas)
+EQUIPO = ["Diego Falcón Costilla A01139580", "Alejandro José Martínez Ubeda A01797775",
+          "Ana Bonavides Aguilar A01423281", "José Andrés Orantes Guillén A01174130"]
 FECHA = "septiembre de 2026"
 
 EDGE = next((p for p in (

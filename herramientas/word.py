@@ -23,18 +23,22 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Mm, Pt, RGBColor
 
-from .reporte import CURSO, FECHA, INTEGRANTES
+from .reporte import CURSO, EQUIPO, FECHA, INTEGRANTES
 
 AZUL = RGBColor(0x0B, 0x3D, 0x91)
 PLANTILLA = Path(__file__).with_name("plantilla_word.docx")
 RAIZ = Path(__file__).resolve().parent.parent
 
-# Prácticas: carpeta -> (notebooks en orden, nombre del .docx, título, subtítulo). Mismos textos que los PDF.
+# Prácticas: carpeta -> (notebooks en orden, nombre del .docx, título, subtítulo[, datos de portada]). Mismos textos que los PDF.
+# Las prácticas ya entregadas en equipo llevan los integrantes y la fecha de Canvas.
+ENTREGA_EQUIPO = {"integrantes": EQUIPO, "fecha": "27/9/2026"}
 PRACTICAS = {
     "04-practica-1-procesamiento-basico": (["practica_1_procesamiento_basico"], "Practica1_Procesamiento_basico",
-        "Práctica 1. Procesamiento básico de imágenes", "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción"),
+        "Práctica 1. Procesamiento básico de imágenes", "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción",
+        ENTREGA_EQUIPO),
     "05-practica-2-ecualizacion-adaptativa": (["practica_2_ecualizacion_adaptativa"], "Practica2_Ecualizacion_adaptativa",
-        "Práctica 2. Ecualización adaptativa de histogramas", "Mosaicos, ventana deslizante (SWAHE) y CLAHE"),
+        "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles", "Mosaicos, ventana deslizante (SWAHE) y CLAHE",
+        ENTREGA_EQUIPO),
     "06-practica-3-filtros-espaciales": (["practica_3_filtros_espaciales"], "Practica3_Filtros_espaciales",
         "Práctica 3. Filtros espaciales por convolución", "Prewitt, Sobel y Laplaciano sin OpenCV, realce por diferencia y mejora de una gammagrafía ósea"),
     "08-practica-4-morfologia": (["practica_4_morfologia"], "Practica4_Morfologia",
@@ -163,7 +167,7 @@ def html_a_docx(ruta_html, ruta_docx, recursos=None):
 
 
 def notebook_a_docx(notebooks, ruta_docx, titulo, subtitulo="", integrantes=None,
-                    entrega="Notebook ejecutado + informe de resultados"):
+                    entrega="Notebook ejecutado + informe de resultados", fecha=FECHA):
     """Une uno o más notebooks ejecutados en un solo .docx con portada."""
     notebooks = [n if hasattr(n, "cells") else nbformat.read(str(n), as_version=4) for n in notebooks]
     unido = copy.deepcopy(notebooks[0])
@@ -174,9 +178,9 @@ def notebook_a_docx(notebooks, ruta_docx, titulo, subtitulo="", integrantes=None
             for o in c.get("outputs", []):
                 if "image/png" in o.get("data", {}):
                     o["data"].pop("text/plain", None)
-    integr = ", ".join(integrantes or INTEGRANTES)
-    portada = [(CURSO, "Body Text"), (titulo, "Title"), (subtitulo, "Subtitle"),
-               (f"Integrantes: {integr}", "Body Text"), (f"Fecha: {FECHA}", "Body Text"), (f"Entrega: {entrega}", "Body Text")]
+    portada = ([(CURSO, "Body Text"), (titulo, "Title"), (subtitulo, "Subtitle"), ("Integrantes:", "Body Text")]
+               + [(i, "Body Text") for i in (integrantes or INTEGRANTES)]  # uno por línea, como en el PDF
+               + [(f"Fecha: {fecha}", "Body Text"), (f"Entrega: {entrega}", "Body Text")])
     with tempfile.TemporaryDirectory() as tmp:
         ruta_nb = Path(tmp) / "unido.ipynb"
         nbformat.write(unido, str(ruta_nb))
@@ -187,10 +191,10 @@ def notebook_a_docx(notebooks, ruta_docx, titulo, subtitulo="", integrantes=None
 def practicas():
     """Genera el .docx de cada práctica a partir de sus notebooks ya ejecutados."""
     hechos = []
-    for carpeta, (nbs, nombre, titulo, sub) in PRACTICAS.items():
+    for carpeta, (nbs, nombre, titulo, sub, *extra) in PRACTICAS.items():
         base = RAIZ / "actividades" / carpeta
         rutas = [base / "codigo" / f"{n}.ipynb" for n in nbs]
-        hechos.append(notebook_a_docx(rutas, base / f"{nombre}.docx", titulo, sub))
+        hechos.append(notebook_a_docx(rutas, base / f"{nombre}.docx", titulo, sub, **(extra[0] if extra else {})))
         print("DOCX", hechos[-1].relative_to(RAIZ))
     return hechos
 

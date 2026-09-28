@@ -9,7 +9,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
@@ -315,10 +315,11 @@ def main():
                   "            im.crop((c * w // k, f * h // k, (c + 1) * w // k, (f + 1) * h // k)).save(f'data/image_{f+1:02d}_{c+1:02d}.png')\n\nn = 4\nslice('data/image.jpg', n)")
     cu.agregar(nb, EJ)
     cu.ejecutar(nb, AQUI / "codigo")
+    cu.formato_entrega(nb)  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica2_Ecualizacion_adaptativa.pdf", "Práctica 2. Ecualización adaptativa de histogramas",
-                   "Mosaicos, ventana deslizante (SWAHE) y CLAHE")
+    pdf = cu.a_pdf(nb, AQUI / "Practica2_Ecualizacion_adaptativa.pdf", "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles",
+                   "Mosaicos, ventana deslizante (SWAHE) y CLAHE", integrantes=EQUIPO, fecha="27/9/2026")
     n = zip_entrega(AQUI / "Practica2_Ecualizacion_adaptativa.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

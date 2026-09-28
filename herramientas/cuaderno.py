@@ -120,7 +120,27 @@ a[href]:after { content:none !important; }  /* la plantilla classic repite cada 
 """
 
 
-def a_pdf(nb, ruta_pdf, titulo, subtitulo="", integrantes=None, entrega="Notebook ejecutado + PDF de resultados"):
+DECLARACION_IA = """## Declaración y uso de IA
+
+Para la elaboración de este trabajo se utilizó Claude Opus, de Anthropic, como herramienta de apoyo en el desarrollo y la revisión del código, así como en la redacción del documento final. Su uso fue complementario y no sustituyó el criterio académico de los autores. El análisis, la interpretación de los resultados y la formulación de las conclusiones corresponden a los autores, quienes asumen la responsabilidad íntegra sobre la revisión, la exactitud y la integridad académica del contenido final."""
+
+ETIQUETAS_EN_NEGRITA = ("Resultados y discusión.", "Discusión.")
+
+
+def formato_entrega(nb, inicio="# Ejercicios de la actividad"):
+    """Formato de entrega de las prácticas en equipo (idempotente):
+    - desde los ejercicios, quita las negritas del texto; conserva las etiquetas de resultados y la tabla de métricas;
+    - agrega al final la declaración de uso de IA."""
+    ini = next(i for i, c in enumerate(nb.cells) if c.cell_type == "markdown" and c.source.lstrip().startswith(inicio))
+    for c in nb.cells[ini + 1:]:
+        if c.cell_type == "markdown" and "## Métricas" not in c.source:
+            c.source = re.sub(r"\*\*(.+?)\*\*", lambda m: m.group(0) if m.group(1) in ETIQUETAS_EN_NEGRITA else m.group(1), c.source)
+    if not any(c.cell_type == "markdown" and "## Declaración y uso de IA" in c.source for c in nb.cells):
+        nb.cells.append(md(DECLARACION_IA))
+    return nb
+
+
+def a_pdf(nb, ruta_pdf, titulo, subtitulo="", integrantes=None, entrega="Notebook ejecutado + PDF de resultados", fecha=FECHA):
     """Convierte el notebook ya ejecutado a un PDF con portada (HTML incrustado + Edge sin interfaz)."""
     ruta_pdf = Path(ruta_pdf)
     exportador = HTMLExporter(template_name="classic")
@@ -128,7 +148,7 @@ def a_pdf(nb, ruta_pdf, titulo, subtitulo="", integrantes=None, entrega="Noteboo
     integr = "<br>".join(esc(i) for i in (integrantes or INTEGRANTES))
     portada = (f'<section class="portada"><div class="curso">{esc(CURSO)}</div><h1>{titulo}</h1>'
                f'<div class="sub">{subtitulo}</div><div class="meta"><p><strong>Integrantes:</strong><br>{integr}</p>'
-               f"<p><strong>Fecha:</strong> {esc(FECHA)}</p><p><strong>Entrega:</strong> {esc(entrega)}</p></div></section>")
+               f"<p><strong>Fecha:</strong> {esc(fecha)}</p><p><strong>Entrega:</strong> {esc(entrega)}</p></div></section>")
     cuerpo = cuerpo.replace("</head>", f"<style>{CSS_EXTRA}</style></head>", 1)
     cuerpo = re.sub(r"(<body[^>]*>)", r"\1" + portada.replace("\\", "\\\\"), cuerpo, count=1)
     ruta_html = ruta_pdf.with_suffix(".html")

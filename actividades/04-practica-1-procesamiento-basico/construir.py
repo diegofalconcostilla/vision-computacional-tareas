@@ -15,7 +15,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMPARTIDOS = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
@@ -276,11 +276,13 @@ def main():
     cu.reemplazar(nb, "log_img = c * (np.log(orig_img + 1))", "log_img = c * (np.log(orig_img.astype(np.float64) + 1))")
     cu.agregar(nb, EJERCICIOS)
     cu.ejecutar(nb, AQUI / "codigo")
+    cu.formato_entrega(nb)  # sin negritas en las reflexiones + declaración de uso de IA
     ruta_nb = cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(RAIZ / "datos_compartidos" / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
     pdf = cu.a_pdf(nb, AQUI / "Practica1_Procesamiento_basico.pdf",
                    "Práctica 1. Procesamiento básico de imágenes",
-                   "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción")
+                   "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción",
+                   integrantes=EQUIPO, fecha="27/9/2026")
     n = zip_entrega(AQUI / "Practica1_Procesamiento_basico.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 
