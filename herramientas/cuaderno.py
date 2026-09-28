@@ -109,6 +109,7 @@ h3 { font-size:11.5pt; break-after:avoid; }
 .rendered_html th, .text_cell_render th { background:#0b3d91 !important; color:#fff !important; font-weight:600 !important; }
 .rendered_html tr:nth-child(even) td { background:#eef2fa !important; }
 a.anchor-link { display:none; }
+a[href]:after { content:none !important; }  /* la plantilla classic repite cada URL entre paréntesis al imprimir */
 .portada { min-height:235mm; display:flex; flex-direction:column; justify-content:center; break-after:page; }
 .portada .curso { color:#555; font-size:11pt; margin-bottom:22pt; }
 .portada h1 { font-size:22pt; border:0; margin:0 0 6pt; }
