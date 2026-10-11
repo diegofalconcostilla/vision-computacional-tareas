@@ -134,16 +134,41 @@ def _es_etiqueta(m):
             or (re.fullmatch(r"\s*(?:[-*]|\d+\.)?\s*", antes) and texto.rstrip()[-1:] in ".:" and len(texto.split()) <= 8))
 
 
+PROTEGIDO = re.compile(r"\$\$.+?\$\$|\$[^$\n]+\$|`[^`\n]+`|https?://\S+", re.S)  # fórmulas, código y URL
+CURSIVA = re.compile(r"(?<![*\w])\*(?=\S)([^*\n]+?)(?<=\S)\*(?![*\w])")
+
+
+def _sin_cursivas(t):
+    """Quita las cursivas *así* fuera de fórmulas, código y URL."""
+    partes, fin = [], 0
+    for m in PROTEGIDO.finditer(t):
+        partes += [CURSIVA.sub(r"\1", t[fin:m.start()]), m.group(0)]
+        fin = m.end()
+    return "".join(partes) + CURSIVA.sub(r"\1", t[fin:])
+
+
+def _formato_texto(t):
+    """Formato de los informes en el texto propio: encabezados sin numerar ("## 2. Hallazgos" -> "## Hallazgos") y sin
+    cursivas. Las referencias (desde "## Referencias") conservan la cursiva de APA."""
+    cuerpo, sep, refs = t.partition("## Referencias")
+    cuerpo = re.sub(r"(?m)^(#+\s+)\d+(?:\.\d+)*\.\s+", r"\1", cuerpo)
+    return _sin_cursivas(cuerpo) + sep + refs
+
+
 def formato_entrega(nb, inicio="# Ejercicios de la actividad", declaracion=True):
-    """Formato de entrega de las prácticas en equipo (idempotente):
+    """Formato de entrega de las prácticas en equipo (idempotente), solo en las celdas que agregamos:
     - desde los ejercicios (`inicio`: prefijo o tupla de prefijos del encabezado; None = todo el notebook), quita las
       negritas del texto; conserva las etiquetas cortas al inicio de párrafo y la tabla de métricas;
+    - encabezados sin numerar y texto sin cursivas, salvo en las referencias;
     - agrega al final la declaración de uso de IA (si `declaracion`)."""
     ini = 0 if inicio is None else next(i for i, c in enumerate(nb.cells)
                                         if c.cell_type == "markdown" and c.source.lstrip().startswith(inicio))
     for c in nb.cells[ini:]:
-        if c.cell_type == "markdown" and "## Métricas" not in c.source:
+        if c.cell_type != "markdown":
+            continue
+        if "## Métricas" not in c.source:
             c.source = re.sub(r"\*\*(.+?)\*\*", lambda m: m.group(0) if _es_etiqueta(m) else m.group(1), c.source)
+        c.source = _formato_texto(c.source)
     if declaracion and not any(c.cell_type == "markdown" and "## Declaración y uso de IA" in c.source for c in nb.cells):
         nb.cells.append(md(DECLARACION_IA))
     return nb

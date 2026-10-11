@@ -172,23 +172,23 @@ __HALLAZGOS__
 ]
 
 HALLAZGOS = """
-**1. Efecto de σ y del tamaño del kernel.**
+**Efecto de σ y del tamaño del kernel.**
 - Al aumentar σ el suavizado previo elimina detalle fino y, con él, líneas. Con un kernel adaptado (6σ+1) el porcentaje de píxeles de borde baja de 17.9 % (σ=0.5) a 12.0 % (σ=1), 4.2 % (σ=2), 1.4 % (σ=3), 0.07 % (σ=5) y 0 % (σ=10): con σ=10 la imagen queda tan borrosa que ningún gradiente supera los umbrales.
 - **Con el kernel fijo de 3×3 del notebook base, σ deja de tener efecto a partir de σ≈2**: el porcentaje de bordes se estanca en 13.1 % (13.25 %, 13.07 %, 13.05 %, 13.05 % para σ = 2, 3, 5 y 10). Un kernel de 3×3 solo representa un gaussiano con σ ≲ 1; para σ mayor se convierte en un promedio uniforme. Por eso los valores «1, 3, 5, 10, 20» que sugiere el notebook no producen resultados distintos si no se aumenta también `kernel_size`.
 - Regla práctica: el tamaño del kernel debe ser al menos 6σ+1.
 
-**2. Con y sin remoción de ruido.** En una imagen sintética con bordes conocidos (tolerancia de 2 px) se midió el F1 de Canny con umbrales fijos:
+**Con y sin remoción de ruido.** En una imagen sintética con bordes conocidos (tolerancia de 2 px) se midió el F1 de Canny con umbrales fijos:
 - **Sin suavizar, el ruido arruina el resultado**: con ruido de σn=10 el F1 es 0.17 y con σn=25 es 0.13, porque la exhaustividad es 1.0 (se detectan todos los bordes reales) pero la precisión es de solo 0.07 con σn=25 (más del 90 % de lo detectado es ruido).
 - Con el suavizado adecuado el F1 llega a 1.000 con σn=10 (σ=1.0), 1.000 con σn=25 (σ=1.4) y 0.993 con σn=40 (σ=2.0). **El σ óptimo crece con el ruido** (0.7–1.0 → 1.4 → 2.0).
 - Un suavizado excesivo también falla: con σn=25 y σ=3 la exhaustividad cae a 0.16 y con σ=5 se pierde todo. Ojo: con umbrales fijos, un σ grande reduce la magnitud del gradiente, así que en la imagen limpia con σ=3 o σ=5 el F1 es 0.000 aunque el borde sigue ahí; al suavizar más hay que bajar también los umbrales.
 - Conclusión: **la remoción de ruido no es opcional**; el primer paso de Canny es necesario, y su intensidad debe ajustarse al ruido y a los umbrales.
 
-**3. Imágenes con distinta cantidad de líneas y textura** (σ=1.4, umbrales 50/120):
+**Imágenes con distinta cantidad de líneas y textura.** Con σ=1.4 y umbrales 50/120:
 - La escena urbana, con muchas líneas (ventanas, cables, señales), es la que tiene más bordes (7.0 % de píxeles, 327 componentes); la autopista, con pocas líneas, 4.9 % (211 componentes).
 - La imagen de células, de textura fina, tiene una densidad de bordes menor (3.4 %) pero **es la que más bordes conserva al subir σ a 3 (1.2 %)**, porque el contorno de las células es un borde amplio; en cambio, la microscopía de fondo liso cae a 0.06 %, pues sus contornos son de bajo contraste.
 - Un solo par de umbrales no sirve para todas las imágenes: las de bajo contraste requieren umbrales menores, y las texturadas, mayores para no llenarse de bordes espurios.
 
-**4. Correcciones al notebook base** (afectan también al Colab actual):
+**Correcciones al notebook base.** Afectan también al Colab actual:
 - `scipy.ndimage.filters` ya no existe (se usa `scipy.ndimage`).
 - La función `threshold` marca los píxeles débiles con el valor 25, pero `hysteresis` los buscaba con 75 por defecto, de modo que **la histéresis no promovía ningún píxel débil**; se cambió el valor por defecto a 25.
 - `data/img.npy` lo crea el notebook de la práctica 2; aquí se genera junto con `data/image.jpg`.
