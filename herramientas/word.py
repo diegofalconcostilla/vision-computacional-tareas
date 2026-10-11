@@ -25,10 +25,9 @@ from docx.shared import Mm, Pt, RGBColor
 
 from .reporte import CURSO, EQUIPO, FECHA, INTEGRANTES
 
-AZUL = RGBColor(0x0B, 0x3D, 0x91)
 PLANTILLA = Path(__file__).with_name("plantilla_word.docx")
 PLANTILLA_INFORME = Path(__file__).with_name("plantilla_informe.docx")  # informes "Relaciona lo aprendido"
-TITULOS = RGBColor(0x0F, 0x47, 0x61)  # azul petróleo de los encabezados del informe de ejemplo
+TITULOS = RGBColor(0, 0, 0)  # títulos y subtítulos en negro
 RAIZ = Path(__file__).resolve().parent.parent
 
 def equipo(fecha):
@@ -71,7 +70,7 @@ PRACTICAS = {
 # ---------------------------------------------------------------- plantilla de estilos
 
 def plantilla():
-    """Crea (una vez) la plantilla de estilos: A4, Calibri 10.5 pt y títulos en el azul de los PDF."""
+    """Crea (una vez) la plantilla de estilos: A4, Calibri 10.5 pt y títulos en negro, como en los PDF."""
     if PLANTILLA.exists():
         return PLANTILLA
     datos = subprocess.run(["pandoc", "--print-default-data-file", "reference.docx"],
@@ -92,14 +91,14 @@ def plantilla():
     for nombre, tam in (("Title", 22), ("Subtitle", 13), ("Heading 1", 18), ("Heading 2", 14), ("Heading 3", 11.5), ("Heading 4", 10.5)):
         f = est[nombre].font
         f.name, f.size, f.bold = "Calibri", Pt(tam), nombre != "Subtitle"
-        f.color.rgb = AZUL if nombre != "Subtitle" else RGBColor(0x33, 0x33, 0x33)
+        f.color.rgb = TITULOS
     est["Verbatim Char"].font.name, est["Verbatim Char"].font.size = "Consolas", Pt(8.5)
     doc.save(PLANTILLA)
     return PLANTILLA
 
 
 def plantilla_informe():
-    """Crea (una vez) la plantilla de los informes: A4, Aptos 11 pt justificado y encabezados sin negrita en azul petróleo,
+    """Crea (una vez) la plantilla de los informes: A4, Aptos 11 pt justificado y encabezados sin negrita en negro,
     como el informe de ejemplo hecho en Word."""
     if PLANTILLA_INFORME.exists():
         return PLANTILLA_INFORME
@@ -123,7 +122,7 @@ def plantilla_informe():
             e.paragraph_format.space_after = Pt(8)
     for nombre, tam, color in (("Title", 27, RGBColor(0, 0, 0)), ("Heading 1", 27, RGBColor(0, 0, 0)),
                                ("Heading 2", 17, TITULOS), ("Heading 3", 13.5, TITULOS),
-                               ("Heading 4", 12, RGBColor(0x59, 0x59, 0x59)), ("Subtitle", 14, RGBColor(0x59, 0x59, 0x59))):
+                               ("Heading 4", 12, TITULOS), ("Subtitle", 14, TITULOS)):
         f = est[nombre].font
         f.name, f.size, f.bold, f.italic, f.color.rgb = "Aptos Display", Pt(tam), False, False, color
     est["Subtitle"].font.name = est["Heading 4"].font.name = "Aptos"

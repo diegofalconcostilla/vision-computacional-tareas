@@ -28,10 +28,10 @@ EDGE = next((p for p in (
 
 # Formato de los informes "Relaciona lo aprendido" (el del informe de vehículos autónomos entregado en Word):
 # título de la actividad de Canvas, subtítulo con el tema, sección "Equipo" con matrículas, encabezados sin numerar
-# en azul petróleo, texto justificado sin cursivas ni negritas (salvo etiquetas cortas) y declaración de uso de IA.
+# en negro, texto justificado sin cursivas ni negritas (salvo etiquetas cortas) y declaración de uso de IA.
 CSS = """
 @page { size: A4; margin: 25mm 25mm 22mm 25mm; }
-:root { --titulos:#0f4761; --azul:#0b3d91; --gris:#595959; --suave:#eef2fa; --borde:#c9d3ea; }
+:root { --titulos:#000; --azul:#0b3d91; --gris:#595959; --suave:#eef2fa; --borde:#c9d3ea; }
 * { box-sizing: border-box; }
 body { font-family: Aptos, "Segoe UI Variable Text", "Segoe UI", Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.5; color:#000; margin:0; }
 h1 { font-family: "Aptos Display", Aptos, "Segoe UI Variable Display", "Segoe UI", sans-serif; font-weight:400; font-size: 27pt; line-height:1.2;
@@ -40,11 +40,11 @@ h2 { font-family: "Aptos Display", Aptos, "Segoe UI Variable Display", "Segoe UI
      color:var(--titulos); margin:20pt 0 6pt; break-after: avoid; }
 h3 { font-family: "Aptos Display", Aptos, "Segoe UI Variable Display", "Segoe UI", sans-serif; font-weight:400; font-size: 13.5pt;
      color:var(--titulos); margin:12pt 0 4pt; break-after: avoid; }
-h4 { font-weight:400; font-size: 12pt; letter-spacing: 0.6pt; color:var(--gris); margin:14pt 0 2pt; break-after: avoid; }
+h4 { font-weight:400; font-size: 12pt; letter-spacing: 0.6pt; color:var(--titulos); margin:14pt 0 2pt; break-after: avoid; }
 strong { font-weight: 700; }
 p { margin: 0 0 9pt; text-align: justify; }
 ul, ol { margin: 0 0 9pt; padding-left: 18pt; } li { margin-bottom:3pt; text-align: justify; }
-.sub { font-size:14pt; color:var(--gris); letter-spacing: 1pt; line-height:1.4; margin-bottom:12pt; }
+.sub { font-size:14pt; color:var(--titulos); letter-spacing: 1pt; line-height:1.4; margin-bottom:12pt; }
 .equipo { text-align:left; }
 table { border-collapse: collapse; width:100%; margin: 6pt 0 10pt; font-size: 8.9pt; line-height:1.35; break-inside: avoid; }
 th, td { border:1px solid var(--borde); padding:3.5pt 5pt; vertical-align: top; text-align:left; }

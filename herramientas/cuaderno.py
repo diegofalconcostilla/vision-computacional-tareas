@@ -99,9 +99,9 @@ div.cell { break-inside: auto; }
 div.output_png img, div.output_jpeg img, .output_area img { max-width:100% !important; max-height:150mm; height:auto !important; }
 div.output_subarea { max-width:100% !important; }
 div.text_cell_render { padding:0 !important; }
-h1 { color:#0b3d91; font-size:19pt; border-bottom:2px solid #0b3d91; }
-h2 { color:#0b3d91; font-size:14pt; border-bottom:1px solid #0b3d91; break-after:avoid; }
-h3 { font-size:11.5pt; break-after:avoid; }
+h1 { color:#000; font-size:19pt; border-bottom:2px solid #000; }
+h2 { color:#000; font-size:14pt; border-bottom:1px solid #000; break-after:avoid; }
+h3 { color:#000; font-size:11.5pt; break-after:avoid; }
 .rendered_html table, .text_cell_render table { table-layout:auto !important; width:100% !important; border-collapse:collapse !important;
   margin:6pt 0 !important; font-size:8.8pt !important; border:0 !important; }
 .rendered_html th, .rendered_html td, .text_cell_render th, .text_cell_render td { text-align:left !important; vertical-align:top !important;
@@ -113,7 +113,7 @@ a[href]:after { content:none !important; }  /* la plantilla classic repite cada 
 .portada { min-height:235mm; display:flex; flex-direction:column; justify-content:center; break-after:page; }
 .portada .curso { color:#555; font-size:11pt; margin-bottom:22pt; }
 .portada h1 { font-size:22pt; border:0; margin:0 0 6pt; }
-.portada .sub { font-size:13pt; color:#333; margin-bottom:26pt; }
+.portada .sub { font-size:13pt; color:#000; margin-bottom:26pt; }
 .portada .meta { border-left:4px solid #0b3d91; padding-left:12pt; color:#333; }
 .portada .meta p { margin:0 0 3pt; }
 .refs p { text-indent:-18pt; padding-left:18pt; margin:0 0 4pt; font-size:9.3pt; }
