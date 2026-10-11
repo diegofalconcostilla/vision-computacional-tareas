@@ -16,7 +16,7 @@ cociente = DN["tiempo_ms_por_par"] / SP["tiempo_ms_por_par"]
 
 def main():
     r = Reporte("Flujo óptico sparse y denso para analizar el movimiento cardíaco",
-                "Lucas-Kanade y Farnebäck sobre una cine de resonancia magnética de cuatro cámaras", carpeta=AQUI,
+                "Lucas-Kanade y Farnebäck sobre una cine de resonancia magnética de cuatro cámaras", carpeta=AQUI, actividad="Flujo óptico sparse y denso para analizar movimiento en secuencias de video",
                 entrega="PDF con capturas y análisis + archivo comprimido con el código y los videos")
     r.portada()
 
@@ -53,7 +53,7 @@ def main():
 
     r.h2("3. Parte 2. Selección del video")
     r.p(f"Se eligió una <strong>cine de resonancia magnética cardíaca en vista de cuatro cámaras</strong>, de un paciente con un infarto inferior crónico (Doregan, s. f.; CC BY-SA 4.0): {V['cuadros']} cuadros de {V['ancho']}×{V['alto']} px a 25 cuadros/s, en los que se ven las aurículas, los ventrículos y sus paredes en movimiento. "
-        "Aparenta cubrir <strong>un ciclo cardíaco completo</strong>: las posiciones de los puntos rastreados regresan a su origen al final (ver la sección 4). Es un movimiento continuo y periódico, con la ventaja de que sirve para verificar la coherencia de los métodos (si el ciclo se cierra, la trayectoria debe volver al inicio).")
+        "Aparenta cubrir <strong>un ciclo cardíaco completo</strong>: las posiciones de los puntos rastreados regresan a su origen al final (ver la Parte 3. Implementación). Es un movimiento continuo y periódico, con la ventaja de que sirve para verificar la coherencia de los métodos (si el ciclo se cierra, la trayectoria debe volver al inicio).")
     r.fig("figuras/fig1_cuadros.png", "Cuadros 0, 12, 25 y 37 de la cine. En el primero se marcan los puntos de Shi-Tomasi que rastrea Lucas-Kanade.", alto=75)
 
     r.h2("4. Parte 3. Implementación")

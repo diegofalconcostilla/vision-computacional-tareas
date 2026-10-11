@@ -28,7 +28,7 @@ def main():
         shutil.copy(RAIZ / "datos_compartidos" / n, AQUI / "datos" / n)
 
     r = Reporte("Convolución y extracción de líneas en visión artificial",
-                "De píxeles a decisiones: detección de carriles con Sobel, Prewitt, Laplaciano y Canny", carpeta=AQUI,
+                "De píxeles a decisiones: detección de carriles con Sobel, Prewitt, Laplaciano y Canny", carpeta=AQUI, actividad="Extracción de líneas y su aplicación en vehículos autónomos",
                 entrega="PDF con imágenes y análisis + archivo comprimido con el código")
     r.portada()
 

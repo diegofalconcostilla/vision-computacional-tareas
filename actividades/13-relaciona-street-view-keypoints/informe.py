@@ -18,7 +18,7 @@ RG = R["regiones_sift"]
 def main():
     shutil.copy(RAIZ / "herramientas" / "puntos.py", AQUI / "puntos.py")
     r = Reporte("Reconocimiento visual con keypoints: la idea detrás de Street View",
-                "Harris, ORB y SIFT para relacionar dos imágenes consecutivas de una calle", carpeta=AQUI,
+                "Harris, ORB y SIFT para relacionar dos imágenes consecutivas de una calle", carpeta=AQUI, actividad="Reconocimiento visual aplicado a Google Street View",
                 entrega="PDF con imágenes, keypoints y correspondencias + archivo comprimido con el código")
     r.portada()
 

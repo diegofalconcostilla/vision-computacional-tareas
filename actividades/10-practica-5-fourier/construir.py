@@ -10,7 +10,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 CODIGO = AQUI / "codigo"
@@ -245,10 +245,11 @@ def main():
         celdas.append(c)
     cu.agregar(nb, celdas)
     cu.ejecutar(nb, CODIGO)
+    cu.formato_entrega(nb)  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, CODIGO / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica5_Fourier.pdf", "Práctica 5. Mejoramiento en el dominio de Fourier",
-                   "Filtros pasa bajas y pasa altas: ideal, Butterworth y gaussiano")
+    pdf = cu.a_pdf(nb, AQUI / "Practica5_Fourier.pdf", "Práctica 5. Algoritmos de mejoramiento de imágenes en el dominio de Fourier",
+                   "Filtros pasa bajas y pasa altas: ideal, Butterworth y gaussiano", integrantes=EQUIPO, fecha="18/10/2026")
     n = zip_entrega(AQUI / "Practica5_Fourier.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

@@ -10,7 +10,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
@@ -213,10 +213,11 @@ def main():
         if c.cell_type == "markdown" and "__HALLAZGOS__" in c.source:
             c.source = c.source.replace("__HALLAZGOS__", HALLAZGOS or "(pendiente)")
     cu.ejecutar(nb, AQUI / "codigo", timeout=1500)
+    cu.formato_entrega(nb, inicio="# Experimentos de la actividad")  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica6_Canny.pdf", "Práctica 6. Extracción de líneas con el algoritmo de Canny",
-                   "Efecto de σ, del suavizado previo y del tipo de imagen")
+    pdf = cu.a_pdf(nb, AQUI / "Practica6_Canny.pdf", "Práctica 6. Extracción de líneas con algoritmo de Canny",
+                   "Efecto de σ, del suavizado previo y del tipo de imagen", integrantes=EQUIPO, fecha="25/10/2026")
     n = zip_entrega(AQUI / "Practica6_Canny.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

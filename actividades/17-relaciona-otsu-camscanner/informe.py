@@ -16,7 +16,7 @@ FON = {"oscuro": "fondo oscuro liso", "granito": "fondo claro moteado (granito)"
 
 def main():
     r = Reporte("Segmentación clásica en aplicaciones de escaneo móvil",
-                "Cómo un sistema tipo CamScanner detecta, endereza y limpia un documento fotografiado", carpeta=AQUI,
+                "Cómo un sistema tipo CamScanner detecta, endereza y limpia un documento fotografiado", carpeta=AQUI, actividad="¿Cómo funciona y se aplica la segmentación en CamScanner?",
                 entrega="PDF con capturas de cada etapa y reflexión + archivo comprimido con el código")
     r.portada()
 

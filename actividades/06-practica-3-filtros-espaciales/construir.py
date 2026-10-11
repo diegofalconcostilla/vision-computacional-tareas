@@ -15,7 +15,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
@@ -338,10 +338,11 @@ def main(conclusion=None):
             c.source = c.source.replace("CONCLUSION_PLACEHOLDER", conclusion or "(pendiente)") + "\n" + REFERENCIAS
     cu.agregar(nb, celdas)
     cu.ejecutar(nb, AQUI / "codigo")
+    cu.formato_entrega(nb, inicio=None)  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica3_Filtros_espaciales.pdf", "Práctica 3. Filtros espaciales por convolución",
-                   "Prewitt, Sobel y Laplaciano sin OpenCV, realce por diferencia y mejora de una gammagrafía ósea")
+    pdf = cu.a_pdf(nb, AQUI / "Practica3_Filtros_espaciales.pdf", "Práctica 3. Algoritmos de mejoramiento de imágenes en el dominio espacial",
+                   "Prewitt, Sobel y Laplaciano sin OpenCV, realce por diferencia y mejora de una gammagrafía ósea", integrantes=EQUIPO, fecha="4/10/2026")
     n = zip_entrega(AQUI / "Practica3_Filtros_espaciales.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
     return nb

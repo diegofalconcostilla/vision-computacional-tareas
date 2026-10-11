@@ -288,14 +288,14 @@ print(f"  global      : {metricas(g, ecualizar(g))['Ruido']:.1f}   RMS={ecualiza
 
 ## Referencias
 
-- Bradski, G. (2000). The OpenCV library [La biblioteca OpenCV]. *Dr. Dobb's Journal of Software Tools, 25*(11), 120–123.
-- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* [Procesamiento digital de imágenes] (4.ª ed.). Pearson. (Cap. 3 y 9.)
-- Htoon, K. S. (2020, 18 de agosto). *A tutorial to histogram equalization* [Tutorial de ecualización de histograma]. Medium. https://medium.com/@kyawsawhtoon/a-tutorial-to-histogram-equalization-497600f270e2
-- OpenCV. (s. f.). *Histogram equalization* [Ecualización de histograma; tutorial]. https://docs.opencv.org/3.4/d4/d1b/tutorial_histogram_equalization.html
-- Pizer, S. M., Amburn, E. P., Austin, J. D., Cromartie, R., Geselowitz, A., Greer, T., ter Haar Romeny, B., Zimmerman, J. B., & Zuiderveld, K. (1987). Adaptive histogram equalization and its variations [La ecualización adaptativa de histograma y sus variantes]. *Computer Vision, Graphics, and Image Processing, 39*(3), 355–368. https://doi.org/10.1016/S0734-189X(87)80186-X
-- TIJ Tech Private Limited. (2020, 15 de diciembre). *Introduction to image processing using OpenCV in Google Colab* [Introducción al procesamiento de imágenes con OpenCV en Google Colab]. Medium. https://karmatnspyphuntsho-tijtech.medium.com/introduction-to-image-processing-using-opencv-in-google-colab-a449306cb395
-- van der Walt, S., Schönberger, J. L., Nunez-Iglesias, J., Boulogne, F., Warner, J. D., Yager, N., Gouillart, E., & Yu, T. (2014). scikit-image: Image processing in Python [scikit-image: procesamiento de imágenes en Python]. *PeerJ, 2*, e453. https://doi.org/10.7717/peerj.453
-- Zuiderveld, K. (1994). Contrast limited adaptive histogram equalization [Ecualización adaptativa de histograma con contraste limitado]. En P. S. Heckbert (Ed.), *Graphics gems IV* (pp. 474–485). Academic Press.
+- Bradski, G. (2000). The OpenCV library. *Dr. Dobb's Journal of Software Tools, 25*(11), 120–123.
+- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson. (Cap. 3 y 9.)
+- Htoon, K. S. (2020, 18 de agosto). *A tutorial to histogram equalization*. Medium. https://medium.com/@kyawsawhtoon/a-tutorial-to-histogram-equalization-497600f270e2
+- OpenCV. (s. f.). *Histogram equalization* [Tutorial]. https://docs.opencv.org/3.4/d4/d1b/tutorial_histogram_equalization.html
+- Pizer, S. M., Amburn, E. P., Austin, J. D., Cromartie, R., Geselowitz, A., Greer, T., ter Haar Romeny, B., Zimmerman, J. B., & Zuiderveld, K. (1987). Adaptive histogram equalization and its variations. *Computer Vision, Graphics, and Image Processing, 39*(3), 355–368. https://doi.org/10.1016/S0734-189X(87)80186-X
+- TIJ Tech Private Limited. (2020, 15 de diciembre). *Introduction to image processing using OpenCV in Google Colab*. Medium. https://karmatnspyphuntsho-tijtech.medium.com/introduction-to-image-processing-using-opencv-in-google-colab-a449306cb395
+- van der Walt, S., Schönberger, J. L., Nunez-Iglesias, J., Boulogne, F., Warner, J. D., Yager, N., Gouillart, E., & Yu, T. (2014). scikit-image: Image processing in Python. *PeerJ, 2*, e453. https://doi.org/10.7717/peerj.453
+- Zuiderveld, K. (1994). Contrast limited adaptive histogram equalization. En P. S. Heckbert (Ed.), *Graphics gems IV* (pp. 474–485). Academic Press.
 - Imágenes: ver `LICENCIAS.md` (Wikimedia Commons; CC0 y CC BY-SA).
 """),
 ]

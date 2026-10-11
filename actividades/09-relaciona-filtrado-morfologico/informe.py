@@ -20,15 +20,15 @@ def ej(clave, s):
 
 def main():
     r = Reporte("Operaciones morfológicas para detectar células en imágenes biomédicas",
-                "Separación y conteo de glóbulos rojos en un frotis de sangre", carpeta=AQUI,
+                "Separación y conteo de glóbulos rojos en un frotis de sangre", carpeta=AQUI, actividad="Filtrado morfológico para mejoramiento de imágenes biomédicas",
                 entrega="PDF con imágenes procesadas y análisis + archivo comprimido con el código")
     r.portada()
 
     r.h2("1. Introducción")
     r.p("Contar y medir células es una de las tareas más frecuentes del análisis biomédico: el conteo de glóbulos en un hemograma, la carga de bacterias en un cultivo, la proporción de células en una biopsia. "
         "Automatizarla requiere <strong>segmentar</strong> la imagen, y en la práctica la binarización sola casi nunca basta: las células aparecen unidas, con huecos, junto a basura y con iluminación desigual. "
-        "Las <strong>operaciones morfológicas</strong> (erosión, dilatación, apertura, cierre, esqueletización) corrigen esos defectos actuando sobre la <em>forma</em> de las regiones binarias (Serra, 1982; Gonzalez & Woods, 2018). "
-        "Este trabajo las aplica a un frotis de sangre real, mide qué hace cada una y valida el procedimiento de conteo con imágenes sintéticas en las que se conoce el número exacto de células.")
+        "Las <strong>operaciones morfológicas</strong> (erosión, dilatación, apertura, cierre, esqueletización) corrigen esos defectos actuando sobre la <em>forma</em> de las regiones binarias (Serra, 1982; Haralick et al., 1987; Gonzalez & Woods, 2018). "
+        "Como resume el material de la actividad (OpenAI, 2026), antes de que un sistema inteligente analice una imagen médica hay que limpiar y reorganizar la información visual. Este trabajo las aplica a un frotis de sangre real, mide qué hace cada una y valida el procedimiento de conteo con imágenes sintéticas en las que se conoce el número exacto de células.")
 
     r.h2("2. Parte 1. Investigación inicial")
     r.h3("¿Qué es una imagen de microscopía digital?")
@@ -47,8 +47,8 @@ def main():
     r.p(f"«Normal Adult Blood Smear» (Chambers, s. f.; CC BY-SA 3.0), un frotis de sangre de un adulto ({F['tam'][0]}×{F['tam'][1]} px) con cientos de glóbulos rojos, algunos en contacto, tres leucocitos y plaquetas dispersas. Como segunda muestra, para ver el efecto de la iluminación desigual, se usó un frotis con tinción Wright (Chaurasiya, s. f.; CC BY-SA 4.0).")
 
     r.h2("3. Parte 2. Aplicación de operaciones morfológicas")
-    r.p("<strong>Herramienta:</strong> Python con OpenCV y scikit-image. <strong>Binarización:</strong> canal verde (donde el contraste entre las células rosadas y el fondo es mayor), suavizado gaussiano leve y umbral de Otsu (t = "
-        f"{F['umbral_otsu']}); las células son los píxeles más oscuros. <strong>Área típica</strong> de una célula: {F['area_tipica_px']:.0f} px (radio de unos {F['radio_tipico_px']:.0f} px), medida como la mediana de los componentes aislados y redondos.")
+    r.p("<strong>Herramienta:</strong> Python con OpenCV (OpenCV, 2024) y scikit-image (van der Walt et al., 2014; Scikit-image, 2024), con operaciones equivalentes a los filtros morfológicos de ImageJ (ImageJ, 2024). <strong>Binarización:</strong> canal verde (donde el contraste entre las células rosadas y el fondo es mayor), suavizado gaussiano leve y umbral de Otsu (t = "
+        f"{F['umbral_otsu']}; Otsu, 1979); las células son los píxeles más oscuros. <strong>Área típica</strong> de una célula: {F['area_tipica_px']:.0f} px (radio de unos {F['radio_tipico_px']:.0f} px), medida como la mediana de los componentes aislados y redondos.")
     r.fig("figuras/fig1_imagen_binarizacion.png", "Frotis original, histograma del canal verde con el umbral de Otsu y binarización resultante.", alto=75)
     r.fig("figuras/fig2_etapas.png", "Etapas del procesamiento sobre un recorte: (a) binarización, (b) apertura, (c) relleno de huecos, (d) cierre, (e) erosión, (f) esqueleto y (g) separación por transformada de distancia y watershed.", alto=150)
     r.tabla(["Operación", "Qué se aplicó", "Qué cambió"],
@@ -62,7 +62,7 @@ def main():
               f"El conteo casi no cambia: {cur[0]} componentes sin erosionar y entre {min(cur[:10])} y {max(cur[:10])} con 1 a 9 iteraciones (figura 3). Los contactos entre células son anchos, y la erosión los separa solo cuando ya ha reducido mucho las células."],
              ["<strong>Esqueletización</strong>", "Reduce cada región a una línea de un píxel de grosor que conserva su topología.",
               "Una célula aislada da un esqueleto casi puntual; las cadenas y los grupos dan líneas largas o ramificadas (figura 2f), lo que las delata como grupos."],
-             ["<strong>Transformada de distancia + watershed</strong>", "Distancia de cada píxel al fondo; cada célula es un máximo local y el watershed traza las fronteras entre máximos.",
+             ["<strong>Transformada de distancia + watershed</strong>", "Distancia de cada píxel al fondo; cada célula es un máximo local y el watershed traza las fronteras entre máximos (Vincent & Soille, 1991).",
               f"Separa las células que se tocan: se obtienen {F['n_distancia']} objetos (figura 4)."]],
             "Operaciones aplicadas y su efecto medido en el frotis real.")
     r.fig("figuras/fig3_conteo.png", "Izquierda: conteo en el frotis real según las iteraciones de erosión, comparado con la transformada de distancia y con el área total dividida entre el área típica. Derecha: tamaño de cada componente conectado respecto del área típica.", alto=70)
@@ -125,6 +125,7 @@ def main():
         "OpenCV. (2024). <em>Morphological transformations</em>. https://docs.opencv.org/4.x/d9/d61/tutorial_py_morphological_ops.html",
         "Otsu, N. (1979). A threshold selection method from gray-level histograms. <em>IEEE Transactions on Systems, Man, and Cybernetics, 9</em>(1), 62–66. https://doi.org/10.1109/TSMC.1979.4310076",
         "Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-Net: Convolutional networks for biomedical image segmentation. En N. Navab, J. Hornegger, W. M. Wells, &amp; A. F. Frangi (Eds.), <em>Medical Image Computing and Computer-Assisted Intervention – MICCAI 2015</em> (pp. 234–241). Springer. https://doi.org/10.1007/978-3-319-24574-4_28",
+        "Scikit-image. (2024). <em>Morphological filtering examples</em>. https://scikit-image.org/docs/stable/auto_examples/applications/plot_morphology.html",
         "Serra, J. (1982). <em>Image analysis and mathematical morphology</em>. Academic Press.",
         "Stringer, C., Wang, T., Michaelos, M., &amp; Pachitariu, M. (2021). Cellpose: A generalist algorithm for cellular segmentation. <em>Nature Methods, 18</em>(1), 100–106. https://doi.org/10.1038/s41592-020-01018-x",
         "van der Walt, S., Schönberger, J. L., Nunez-Iglesias, J., Boulogne, F., Warner, J. D., Yager, N., Gouillart, E., &amp; Yu, T. (2014). scikit-image: Image processing in Python. <em>PeerJ, 2</em>, e453. https://doi.org/10.7717/peerj.453",

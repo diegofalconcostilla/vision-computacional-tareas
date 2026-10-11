@@ -19,7 +19,7 @@ ORDEN = ["Otsu (2 clases)", "Multi-Otsu (3 clases)", "K-means (K=4)", "Mean Shif
 
 def main():
     r = Reporte("Segmentación de tumores cerebrales en resonancia magnética",
-                "Comparación de Otsu, Watershed, K-means, Mean Shift y superpíxeles (SLIC)", carpeta=AQUI,
+                "Comparación de Otsu, Watershed, K-means, Mean Shift y superpíxeles (SLIC)", carpeta=AQUI, actividad="¿Cómo se aplica la segmentación en imágenes?",
                 entrega="Reporte en PDF + archivo comprimido con el código")
     r.portada()
 

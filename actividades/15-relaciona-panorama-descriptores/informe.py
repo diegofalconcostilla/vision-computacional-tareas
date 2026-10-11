@@ -16,7 +16,7 @@ M, PAN, IL, D = R["matching"], R["panorama"], R["iluminacion"], R["densidad_sift
 def main():
     shutil.copy(RAIZ / "herramientas" / "puntos.py", AQUI / "puntos.py")
     r = Reporte("Panoramas digitales con keypoints y descriptores",
-                "SIFT y ORB para detectar, emparejar y unir tres tomas con solapamiento", carpeta=AQUI,
+                "SIFT y ORB para detectar, emparejar y unir tres tomas con solapamiento", carpeta=AQUI, actividad="Cómo crear una imagen panorámica usando descriptores",
                 entrega="PDF con imágenes, keypoints, matching y reflexión + archivo comprimido con el código")
     r.portada()
 

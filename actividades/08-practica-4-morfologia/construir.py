@@ -11,7 +11,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 DATA = AQUI / "codigo" / "data"
@@ -52,7 +52,7 @@ EJ = [
     cu.md("""
 # Ejercicios de la actividad
 
-Los tres ejercicios aplican la morfología a problemas concretos y se **miden** con métricas objetivas (conteos y coincidencia con una máscara conocida).
+Los tres ejercicios aplican la morfología matemática (Serra, 1982; Haralick et al., 1987) a problemas concretos, implementados en Python con OpenCV (Bradski, 2000) sobre Google Colab (TIJ Tech Private Limited, 2020), y se **miden** con métricas objetivas (conteos y coincidencia con una máscara conocida).
 La imagen del notebook base (`data/image.jpg`) es una hoja de texto escaneada con iluminación desigual y ruido, generada con texto propio; los núcleos celulares son una fotografía real de microscopía de fluorescencia (CC BY-SA 4.0, ver `LICENCIAS.md`).
 
 1. [Ejercicio 1: erosión para separar y contar objetos que se tocan](#ej1)
@@ -65,11 +65,11 @@ La imagen del notebook base (`data/image.jpg`) es una hoja de texto escaneada co
 ## Ejercicio 1. Aplicación de la erosión: separar núcleos celulares que se tocan y contarlos
 
 **Investigación.** La erosión de un objeto binario $A$ con un elemento estructurante $B$ es $A \\ominus B = \\{z \\mid B_z \\subseteq A\\}$: solo sobreviven los píxeles donde $B$ cabe completo dentro del objeto.
-Elimina detalles menores que $B$ y **desconecta objetos unidos por puentes delgados** (Gonzalez & Woods, 2018, cap. 9). En biología y microscopía se emplea para separar células o núcleos que se tocan antes de contarlos o medirlos;
+Elimina detalles menores que $B$ y **desconecta objetos unidos por puentes delgados** (Gonzalez & Woods, 2018, cap. 9; Chhikara, 2022). En biología y microscopía se emplea para separar células o núcleos que se tocan antes de contarlos o medirlos;
 si los objetos se cuentan tal cual, los que se tocan forman un solo componente conexo y el conteo se subestima.
 
-**Demo.** Se cuentan los núcleos de una imagen de fluorescencia (DAPI, canal verde): umbral de Otsu → componentes conexos, y luego después de $k$ iteraciones de erosión con un elemento de 3×3 en forma de elipse.
-Como referencia independiente se usa el conteo por máximos locales de la transformada de distancia, una técnica estándar de separación.
+**Demo.** Se cuentan los núcleos de una imagen de fluorescencia (DAPI, canal verde): umbral de Otsu (Otsu, 1979) → componentes conexos, y luego después de $k$ iteraciones de erosión con un elemento de 3×3 en forma de elipse.
+Como referencia independiente se usa el conteo por máximos locales de la transformada de distancia, una técnica estándar de separación (implementada con scikit-image; van der Walt et al., 2014).
 """),
     cu.code("""
 import cv2, numpy as np, matplotlib.pyplot as plt
@@ -114,7 +114,7 @@ plt.xlabel("iteraciones de erosión"); plt.ylabel("objetos"); plt.legend(); plt.
 ## Ejercicio 2. Aplicación de la dilatación: reparar trazos rotos (preprocesamiento para OCR)
 
 **Investigación.** La dilatación $A \\oplus B$ engrosa los objetos y **cierra huecos y grietas** más estrechos que el elemento estructurante (Gonzalez & Woods, 2018, cap. 9).
-Una aplicación clásica es el **reconocimiento óptico de caracteres (OCR)** sobre documentos impresos o escaneados de baja calidad: los trazos rotos por el ruido o por la impresión se reconectan para que cada carácter sea un solo objeto.
+Una aplicación clásica es el **reconocimiento óptico de caracteres (OCR)** sobre documentos impresos o escaneados de baja calidad: los trazos rotos por el ruido o por la impresión se reconectan para que cada carácter sea un solo objeto (Rosebrock, 2021).
 El riesgo es el opuesto a la erosión: si se dilata demasiado, caracteres vecinos se fusionan.
 
 **Demo.** Sobre un texto limpio se abren huecos aleatorios de 2–3 píxeles en los trazos (con semilla fija) y se dilata con 0 a 4 iteraciones. Se cuentan los componentes conexos (cada carácter debería ser uno, salvo *i* y *j*, que tienen dos) y se mide la coincidencia (IoU) con el texto original.
@@ -155,7 +155,7 @@ for k in (1, 2, 3):
 ## Ejercicio 3. Aplicación de apertura y cierre: limpiar un documento binarizado
 
 **Investigación.** La **apertura** $A \\circ B = (A \\ominus B) \\oplus B$ (erosión seguida de dilatación) elimina objetos y salientes más pequeños que $B$ **sin encoger** el resto; el **cierre** $A \\bullet B = (A \\oplus B) \\ominus B$ (dilatación seguida de erosión) rellena huecos y cierra fisuras más pequeñas que $B$ sin engrosar.
-El par apertura-cierre es el paso de limpieza estándar tras una binarización: se aplica en OCR, en visión industrial (piezas con ruido) y en imagen médica (máscaras de segmentación con agujeros y motas) (Gonzalez & Woods, 2018; OpenCV, s. f.).
+El par apertura-cierre es el paso de limpieza estándar tras una binarización: se aplica en OCR, en visión industrial (piezas con ruido) y en imagen médica (máscaras de segmentación con agujeros y motas) (Gonzalez & Woods, 2018; OpenCV, s. f.; Singh, 2020).
 
 **Demo.** A la máscara de texto limpia se le agregan dos tipos de ruido reales de una binarización: **motas** aisladas en el fondo (ruido «sal») y **agujeros** dentro de los trazos (ruido «pimienta»). Se prueban apertura, cierre y sus combinaciones con elementos estructurantes de distinto tamaño, y se mide la coincidencia (IoU y F1) con la máscara limpia.
 """),
@@ -202,13 +202,16 @@ __CONCLUSION__
 
 ## Referencias
 
-- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson. (Cap. 9: Morphological image processing.)
-- Serra, J. (1982). *Image analysis and mathematical morphology*. Academic Press.
-- Haralick, R. M., Sternberg, S. R., & Zhuang, X. (1987). Image analysis using mathematical morphology. *IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-9*(4), 532–550. https://doi.org/10.1109/TPAMI.1987.4767941
-- Otsu, N. (1979). A threshold selection method from gray-level histograms. *IEEE Transactions on Systems, Man, and Cybernetics, 9*(1), 62–66. https://doi.org/10.1109/TSMC.1979.4310076
-- OpenCV. (s. f.). *Morphological transformations* [Tutorial]. https://docs.opencv.org/4.x/d9/d61/tutorial_py_morphological_ops.html
-- Rosebrock, A. (2021, 28 de abril). OpenCV morphological operations. *PyImageSearch*. https://pyimagesearch.com/2021/04/28/opencv-morphological-operations
 - Bradski, G. (2000). The OpenCV library. *Dr. Dobb's Journal of Software Tools, 25*(11), 120–123.
+- Chhikara, P. (2022, 30 de marzo). *Understanding morphological image processing and its operations*. Towards Data Science. https://towardsdatascience.com/understanding-morphological-image-processing-and-its-operations-7bcf1ed11756
+- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson. (Cap. 9.)
+- Haralick, R. M., Sternberg, S. R., & Zhuang, X. (1987). Image analysis using mathematical morphology. *IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-9*(4), 532–550. https://doi.org/10.1109/TPAMI.1987.4767941
+- OpenCV. (s. f.). *Morphological transformations* [Tutorial]. https://docs.opencv.org/4.x/d9/d61/tutorial_py_morphological_ops.html
+- Otsu, N. (1979). A threshold selection method from gray-level histograms. *IEEE Transactions on Systems, Man, and Cybernetics, 9*(1), 62–66. https://doi.org/10.1109/TSMC.1979.4310076
+- Rosebrock, A. (2021, 28 de abril). *OpenCV morphological operations*. PyImageSearch. https://pyimagesearch.com/2021/04/28/opencv-morphological-operations
+- Serra, J. (1982). *Image analysis and mathematical morphology*. Academic Press.
+- Singh, R. (2020, 11 de agosto). *Morphological transformations of images using OpenCV: Image processing part-2*. Analytics Vidhya. Medium. https://medium.com/analytics-vidhya/morphological-transformations-of-images-using-opencv-image-processing-part-2-f64b14af2a38
+- TIJ Tech Private Limited. (2020, 15 de diciembre). *Introduction to image processing using OpenCV in Google Colab*. Medium. https://karmatnspyphuntsho-tijtech.medium.com/introduction-to-image-processing-using-opencv-in-google-colab-a449306cb395
 - van der Walt, S., Schönberger, J. L., Nunez-Iglesias, J., Boulogne, F., Warner, J. D., Yager, N., Gouillart, E., & Yu, T. (2014). scikit-image: Image processing in Python. *PeerJ, 2*, e453. https://doi.org/10.7717/peerj.453
 - Imágenes: documento generado con texto propio; microscopía de fluorescencia de Arnatbio (CC BY-SA 4.0), ver `LICENCIAS.md`.
 """),
@@ -261,10 +264,11 @@ def main():
         celdas.append(c)
     cu.agregar(nb, celdas)
     cu.ejecutar(nb, AQUI / "codigo")
+    cu.formato_entrega(nb)  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, AQUI / "codigo" / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", AQUI / "codigo" / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica4_Morfologia.pdf", "Práctica 4. Operaciones morfológicas",
-                   "Erosión, dilatación, apertura y cierre aplicados y medidos")
+    pdf = cu.a_pdf(nb, AQUI / "Practica4_Morfologia.pdf", "Práctica 4. Algoritmos de mejoramiento de imágenes usando operaciones morfológicas",
+                   "Erosión, dilatación, apertura y cierre aplicados y medidos", integrantes=EQUIPO, fecha="11/10/2026")
     n = zip_entrega(AQUI / "Practica4_Morfologia.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

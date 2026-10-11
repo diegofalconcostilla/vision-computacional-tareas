@@ -17,7 +17,7 @@ NRX, NTC, NNU = "Radiografía de tórax", "TC de cráneo (corte axial)", "Micros
 
 def main():
     r = Reporte("Segmentación de Otsu en imágenes médicas",
-                "Radiografía de tórax, tomografía de cráneo y microscopía de fluorescencia", carpeta=AQUI,
+                "Radiografía de tórax, tomografía de cráneo y microscopía de fluorescencia", carpeta=AQUI, actividad="Método de segmentación de Otsu",
                 entrega="Reporte breve en PDF + archivo comprimido con el código")
     r.portada()
 

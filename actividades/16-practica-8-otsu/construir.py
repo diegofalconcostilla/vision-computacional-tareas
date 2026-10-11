@@ -11,7 +11,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 CODIGO = AQUI / "codigo"
@@ -253,9 +253,10 @@ def main():
                 c.source = c.source.replace(k, v)
     cu.agregar(nb, EJ)
     cu.ejecutar(nb, CODIGO, timeout=1500)
+    cu.formato_entrega(nb, inicio="# Experimentos de la actividad")  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, CODIGO / f"{NOMBRE}.ipynb")
     shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica8_Otsu.pdf", "Práctica 8. Segmentación con el algoritmo de Otsu", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas")
+    pdf = cu.a_pdf(nb, AQUI / "Practica8_Otsu.pdf", "Práctica 8. Algoritmo Otsu para segmentación", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas", integrantes=EQUIPO, fecha="8/11/2026")
     n = zip_entrega(AQUI / "Practica8_Otsu.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

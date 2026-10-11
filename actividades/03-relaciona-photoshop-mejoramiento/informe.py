@@ -27,7 +27,7 @@ def mil(x):
 def main():
     r = Reporte("Mejoramiento de imágenes con herramientas digitales",
                 "Del ruido y la poca luz a una imagen apta para el análisis: técnicas equivalentes a Adobe Photoshop",
-                carpeta=AQUI, entrega="PDF con imágenes, histogramas y reflexión + archivo comprimido con el código")
+                carpeta=AQUI, actividad="Algoritmos de mejoramiento de imagen en Photoshop", entrega="PDF con imágenes, histogramas y reflexión + archivo comprimido con el código")
     r.portada()
 
     # ------------------------------------------------------------------ 1
@@ -57,7 +57,7 @@ def main():
         f"La poca luz reduce el contraste útil y encarece el ruido, dos problemas distintos que hay que atender por separado.")
     r.h3("¿Por qué es importante mejorar una imagen antes de analizarla?")
     r.p("Los algoritmos de análisis suponen que la información que buscan (bordes, texturas, formas) es visible en los datos. Si las sombras están comprimidas cerca del negro, "
-        "los bordes de los edificios no superan los umbrales de un detector; si hay ruido, aparecen bordes que no existen. En la sección 4 se cuantifica: "
+        "los bordes de los edificios no superan los umbrales de un detector; si hay ruido, aparecen bordes que no existen. Más adelante, en «¿Importa el orden?», se cuantifica: "
         f"con los umbrales de Canny fijos, la imagen original solo registra el {n(C['Original']['bordes_pct'], 1)} % de píxeles de borde, porque gran parte de la escena está demasiado oscura, "
         f"mientras que una versión aclarada pero sin reducir el ruido llega al {n(C['Sin reducir ruido']['bordes_pct'], 1)} %, en gran parte bordes falsos.")
     r.h3("¿Qué diferencias existen entre una imagen original y una optimizada?")

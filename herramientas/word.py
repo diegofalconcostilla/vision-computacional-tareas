@@ -18,7 +18,7 @@ from pathlib import Path
 
 import nbformat
 from docx import Document
-from docx.enum.text import WD_BREAK
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Mm, Pt, RGBColor
@@ -27,11 +27,17 @@ from .reporte import CURSO, EQUIPO, FECHA, INTEGRANTES
 
 AZUL = RGBColor(0x0B, 0x3D, 0x91)
 PLANTILLA = Path(__file__).with_name("plantilla_word.docx")
+PLANTILLA_INFORME = Path(__file__).with_name("plantilla_informe.docx")  # informes "Relaciona lo aprendido"
+TITULOS = RGBColor(0x0F, 0x47, 0x61)  # azul petróleo de los encabezados del informe de ejemplo
 RAIZ = Path(__file__).resolve().parent.parent
 
-# Prácticas: carpeta -> (notebooks en orden, nombre del .docx, título, subtítulo[, datos de portada]). Mismos textos que los PDF.
-# Las prácticas ya entregadas en equipo llevan los integrantes y la fecha de Canvas.
-ENTREGA_EQUIPO = {"integrantes": EQUIPO, "fecha": "27/9/2026"}
+def equipo(fecha):
+    """Datos de portada de una entrega en equipo: integrantes con matrícula y fecha de entrega de Canvas."""
+    return {"integrantes": EQUIPO, "fecha": fecha}
+
+
+ENTREGA_EQUIPO = equipo("27/9/2026")
+# Prácticas: carpeta -> (notebooks en orden, nombre del .docx, título, subtítulo, datos de portada). Mismos textos que los PDF.
 PRACTICAS = {
     "04-practica-1-procesamiento-basico": (["practica_1_procesamiento_basico"], "Practica1_Procesamiento_basico",
         "Práctica 1. Procesamiento básico de imágenes", "Transformaciones píxel a píxel: fotométricas, negativo, gamma y sustracción",
@@ -41,18 +47,24 @@ PRACTICAS = {
         "Práctica 2. Algoritmos de mejoramiento de imágenes basado por pixeles", "Mosaicos, ventana deslizante (SWAHE) y CLAHE",
         ENTREGA_EQUIPO),
     "06-practica-3-filtros-espaciales": (["practica_3_filtros_espaciales"], "Practica3_Filtros_espaciales",
-        "Práctica 3. Filtros espaciales por convolución", "Prewitt, Sobel y Laplaciano sin OpenCV, realce por diferencia y mejora de una gammagrafía ósea"),
+        "Práctica 3. Algoritmos de mejoramiento de imágenes en el dominio espacial", "Prewitt, Sobel y Laplaciano sin OpenCV, realce por diferencia y mejora de una gammagrafía ósea",
+        equipo("4/10/2026")),
     "08-practica-4-morfologia": (["practica_4_morfologia"], "Practica4_Morfologia",
-        "Práctica 4. Operaciones morfológicas", "Erosión, dilatación, apertura y cierre aplicados y medidos"),
+        "Práctica 4. Algoritmos de mejoramiento de imágenes usando operaciones morfológicas", "Erosión, dilatación, apertura y cierre aplicados y medidos",
+        equipo("11/10/2026")),
     "10-practica-5-fourier": (["practica_5_fourier"], "Practica5_Fourier",
-        "Práctica 5. Mejoramiento en el dominio de Fourier", "Filtros pasa bajas y pasa altas: ideal, Butterworth y gaussiano"),
+        "Práctica 5. Algoritmos de mejoramiento de imágenes en el dominio de Fourier", "Filtros pasa bajas y pasa altas: ideal, Butterworth y gaussiano",
+        equipo("18/10/2026")),
     "12-practica-6-canny": (["practica_6_canny"], "Practica6_Canny",
-        "Práctica 6. Extracción de líneas con el algoritmo de Canny", "Efecto de σ, del suavizado previo y del tipo de imagen"),
+        "Práctica 6. Extracción de líneas con algoritmo de Canny", "Efecto de σ, del suavizado previo y del tipo de imagen",
+        equipo("25/10/2026")),
     "14-practica-7-harris-matching": (["practica_7a_harris", "practica_7b_matching"], "Practica7_Harris_y_matching",
-        "Práctica 7. Detector de Harris y matching de puntos de interés",
-        "Parte A: Harris bajo cambios de iluminación, ángulo y escala · Parte B: Harris, ORB y SIFT en matching"),
+        "Práctica 7. Algoritmos de extracción de características",
+        "Parte A: Harris bajo cambios de iluminación, ángulo y escala · Parte B: Harris, ORB y SIFT en matching",
+        equipo("1/11/2026")),
     "16-practica-8-otsu": (["practica_8_otsu"], "Practica8_Otsu",
-        "Práctica 8. Segmentación con el algoritmo de Otsu", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas"),
+        "Práctica 8. Algoritmo Otsu para segmentación", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas",
+        equipo("8/11/2026")),
 }
 
 
@@ -86,11 +98,49 @@ def plantilla():
     return PLANTILLA
 
 
-def _pandoc(entrada, salida, formato, recursos):
+def plantilla_informe():
+    """Crea (una vez) la plantilla de los informes: A4, Aptos 11 pt justificado y encabezados sin negrita en azul petróleo,
+    como el informe de ejemplo hecho en Word."""
+    if PLANTILLA_INFORME.exists():
+        return PLANTILLA_INFORME
+    datos = subprocess.run(["pandoc", "--print-default-data-file", "reference.docx"],
+                           capture_output=True, check=True).stdout
+    PLANTILLA_INFORME.write_bytes(datos)
+    doc = Document(PLANTILLA_INFORME)
+    for s in doc.sections:
+        s.page_width, s.page_height = Mm(210), Mm(297)
+        s.left_margin = s.right_margin = Mm(25)
+        s.top_margin, s.bottom_margin = Mm(25), Mm(22)
+        s.header_distance = s.footer_distance = Mm(12)
+        s.gutter = Mm(0)
+    est = {s.name: s for s in doc.styles}
+    for nombre in ("Normal", "Body Text", "First Paragraph", "Compact"):
+        e = est[nombre]
+        e.font.name, e.font.size, e.font.color.rgb = "Aptos", Pt(11), RGBColor(0, 0, 0)
+        if nombre != "Normal":
+            e.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            e.paragraph_format.line_spacing = 1.15
+            e.paragraph_format.space_after = Pt(8)
+    for nombre, tam, color in (("Title", 27, RGBColor(0, 0, 0)), ("Heading 1", 27, RGBColor(0, 0, 0)),
+                               ("Heading 2", 17, TITULOS), ("Heading 3", 13.5, TITULOS),
+                               ("Heading 4", 12, RGBColor(0x59, 0x59, 0x59)), ("Subtitle", 14, RGBColor(0x59, 0x59, 0x59))):
+        f = est[nombre].font
+        f.name, f.size, f.bold, f.italic, f.color.rgb = "Aptos Display", Pt(tam), False, False, color
+    est["Subtitle"].font.name = est["Heading 4"].font.name = "Aptos"
+    for nombre in ("Subtitle", "Heading 4"):  # letras espaciadas, como en el ejemplo
+        rpr = est[nombre].element.get_or_add_rPr()
+        sp = OxmlElement("w:spacing")
+        sp.set(qn("w:val"), "20")
+        rpr.append(sp)
+    doc.save(PLANTILLA_INFORME)
+    return PLANTILLA_INFORME
+
+
+def _pandoc(entrada, salida, formato, recursos, referencia=None):
     if shutil.which("pandoc") is None:
         raise RuntimeError("Se necesita pandoc para generar el .docx (https://pandoc.org/installing.html)")
     subprocess.run(["pandoc", str(entrada), "-f", formato, "-t", "docx", "-o", str(salida),
-                    f"--reference-doc={plantilla()}", f"--resource-path={recursos}"], check=True)
+                    f"--reference-doc={referencia or plantilla()}", f"--resource-path={recursos}"], check=True)
 
 
 # ---------------------------------------------------------------- retoques con python-docx
@@ -150,10 +200,19 @@ def _pulir(ruta_docx, portada=None):
                 p.runs[0].font.color.rgb = RGBColor(0x55, 0x55, 0x55)
         _salto_antes(primero)
     else:
-        # informes HTML: la portada ocupa todo hasta el primer encabezado de sección
-        h2 = next((p for p in cuerpo if p.style.name == "Heading 2"), None)
-        if h2 is not None:
-            _salto_antes(h2)
+        # informes HTML: título de la actividad (Title) y tema (Subtitle), seguidos sin salto de la sección "Equipo"
+        estilos = {s.name: s for s in doc.styles}
+        h1 = next((i for i, p in enumerate(cuerpo) if p.style.name == "Heading 1"), None)
+        if h1 is not None:
+            for p in cuerpo[:h1]:  # pandoc repite el <title> del HTML como bloque de título
+                if p.style.name == "Title":
+                    p._element.getparent().remove(p._element)
+            cuerpo = doc.paragraphs
+            h1 = next(i for i, p in enumerate(cuerpo) if p.style.name == "Heading 1")
+            cuerpo[h1].style = estilos["Title"]
+            sig = cuerpo[h1 + 1] if h1 + 1 < len(cuerpo) else None
+            if sig is not None and not sig.style.name.startswith("Heading"):
+                sig.style = estilos["Subtitle"]
     doc.save(ruta_docx)
     return ruta_docx
 
@@ -163,7 +222,7 @@ def _pulir(ruta_docx, portada=None):
 def html_a_docx(ruta_html, ruta_docx, recursos=None):
     """Convierte el HTML de un informe (el mismo que se imprime a PDF) a .docx."""
     ruta_html = Path(ruta_html)
-    _pandoc(ruta_html, ruta_docx, "html", recursos or ruta_html.parent)
+    _pandoc(ruta_html, ruta_docx, "html", recursos or ruta_html.parent, plantilla_informe())
     return _pulir(ruta_docx)
 
 

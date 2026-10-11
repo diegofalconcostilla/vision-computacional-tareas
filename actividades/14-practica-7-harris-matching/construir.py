@@ -12,7 +12,7 @@ RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
 from herramientas import puntos as P  # noqa: E402
-from herramientas.reporte import paginas_pdf, zip_entrega  # noqa: E402
+from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
 CODIGO = AQUI / "codigo"
@@ -252,7 +252,7 @@ TEXTO = {"H1": """
 """}
 
 
-def armar(nb_path, nombre, ej, marcadores, parches, titulo, sub, pdf_nombre):
+def armar(nb_path, nombre, ej, marcadores, parches, titulo, sub, pdf_nombre, declaracion):
     nb = cu.cargar(nb_path)
     print(nombre, "parches:", cu.parchear(nb))
     parches(nb)
@@ -262,8 +262,9 @@ def armar(nb_path, nombre, ej, marcadores, parches, titulo, sub, pdf_nombre):
                 c.source = c.source.replace(k, v)
     cu.agregar(nb, ej)
     cu.ejecutar(nb, CODIGO, timeout=1500)
+    cu.formato_entrega(nb, inicio="# Experimentos", declaracion=declaracion)  # la declaración de uso de IA va solo al final (parte B)
     cu.guardar(nb, CODIGO / f"{nombre}.ipynb")
-    return cu.a_pdf(nb, AQUI / pdf_nombre, titulo, sub)
+    return cu.a_pdf(nb, AQUI / pdf_nombre, titulo, sub, integrantes=EQUIPO, fecha="1/11/2026")
 
 
 def parches_harris(nb):
@@ -279,9 +280,9 @@ def main():
     preparar_datos()
     shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
     p1 = armar(AQUI / "enunciado" / "7_harris_edge_corner_detection.ipynb", "practica_7a_harris", EJ_H, {"__H1__": TEXTO["H1"]}, parches_harris,
-               "Práctica 7 (parte A). Detector de esquinas de Harris", "Comportamiento bajo cambios de iluminación, ángulo y escala", "_p7a.pdf")
+               "Práctica 7 (parte A). Detector de esquinas de Harris", "Comportamiento bajo cambios de iluminación, ángulo y escala", "_p7a.pdf", False)
     p2 = armar(AQUI / "enunciado" / "9_image_matching.ipynb", "practica_7b_matching", EJ_M, {"__H2__": TEXTO["H2"]}, parches_matching,
-               "Práctica 7 (parte B). Matching de puntos de interés", "Harris, ORB y SIFT con variaciones de iluminación y orientación", "_p7b.pdf")
+               "Práctica 7 (parte B). Matching de puntos de interés", "Harris, ORB y SIFT con variaciones de iluminación y orientación", "_p7b.pdf", True)
     salida = AQUI / "Practica7_Harris_y_matching.pdf"
     doc = pymupdf.open(p1)
     doc.insert_pdf(pymupdf.open(p2))

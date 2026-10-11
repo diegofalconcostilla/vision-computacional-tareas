@@ -15,7 +15,7 @@ K = W["wiener_K"]
 
 def main():
     r = Reporte("Estabilización digital con procesamiento en frecuencia",
-                "Espectro de Fourier, restauración de imágenes movidas y estabilización de video vibrado", carpeta=AQUI,
+                "Espectro de Fourier, restauración de imágenes movidas y estabilización de video vibrado", carpeta=AQUI, actividad="Estabilización de video en cámaras digitales",
                 entrega="PDF con imágenes, espectros y análisis + archivo comprimido con el código y los videos")
     r.portada()
 

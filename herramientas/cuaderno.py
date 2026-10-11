@@ -127,15 +127,24 @@ Para la elaboración de este trabajo se utilizó Claude Opus, de Anthropic, como
 ETIQUETAS_EN_NEGRITA = ("Resultados y discusión.", "Discusión.")
 
 
-def formato_entrega(nb, inicio="# Ejercicios de la actividad"):
+def _es_etiqueta(m):
+    """Negrita que abre un párrafo o un elemento de lista y funciona como etiqueta corta ("Limitaciones.", "Costo:")."""
+    texto, antes = m.group(1), m.string[:m.start()].rsplit("\n", 1)[-1]
+    return (texto in ETIQUETAS_EN_NEGRITA
+            or (re.fullmatch(r"\s*(?:[-*]|\d+\.)?\s*", antes) and texto.rstrip()[-1:] in ".:" and len(texto.split()) <= 8))
+
+
+def formato_entrega(nb, inicio="# Ejercicios de la actividad", declaracion=True):
     """Formato de entrega de las prácticas en equipo (idempotente):
-    - desde los ejercicios, quita las negritas del texto; conserva las etiquetas de resultados y la tabla de métricas;
-    - agrega al final la declaración de uso de IA."""
-    ini = next(i for i, c in enumerate(nb.cells) if c.cell_type == "markdown" and c.source.lstrip().startswith(inicio))
-    for c in nb.cells[ini + 1:]:
+    - desde los ejercicios (`inicio`: prefijo o tupla de prefijos del encabezado; None = todo el notebook), quita las
+      negritas del texto; conserva las etiquetas cortas al inicio de párrafo y la tabla de métricas;
+    - agrega al final la declaración de uso de IA (si `declaracion`)."""
+    ini = 0 if inicio is None else next(i for i, c in enumerate(nb.cells)
+                                        if c.cell_type == "markdown" and c.source.lstrip().startswith(inicio))
+    for c in nb.cells[ini:]:
         if c.cell_type == "markdown" and "## Métricas" not in c.source:
-            c.source = re.sub(r"\*\*(.+?)\*\*", lambda m: m.group(0) if m.group(1) in ETIQUETAS_EN_NEGRITA else m.group(1), c.source)
-    if not any(c.cell_type == "markdown" and "## Declaración y uso de IA" in c.source for c in nb.cells):
+            c.source = re.sub(r"\*\*(.+?)\*\*", lambda m: m.group(0) if _es_etiqueta(m) else m.group(1), c.source)
+    if declaracion and not any(c.cell_type == "markdown" and "## Declaración y uso de IA" in c.source for c in nb.cells):
         nb.cells.append(md(DECLARACION_IA))
     return nb
 
