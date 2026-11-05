@@ -21,7 +21,7 @@ def main():
     r.portada()
 
     r.h2("1. Introducción y aclaración sobre las imágenes")
-    r.p("La función panorámica de un teléfono parece automática, pero detrás hay una cadena de visión computacional: detectar puntos clave en cada foto, describirlos con un vector numérico, emparejarlos entre fotos consecutivas, estimar la transformación geométrica que las alinea (una homografía, con RANSAC para descartar errores) y fusionarlas en una sola imagen (Brown & Lowe, 2007). "
+    r.p("La función panorámica de un teléfono parece automática, pero detrás hay una cadena de visión computacional: detectar puntos clave en cada foto, describirlos con un vector numérico, emparejarlos entre fotos consecutivas, estimar la transformación geométrica que las alinea (una homografía, con RANSAC para descartar errores) y fusionarlas en una sola imagen (Brown & Lowe, 2007; Szeliski, 2006), como resume el esquema de la actividad (OpenAI, 2026). "
         "Este trabajo recorre esos pasos con dos descriptores, SIFT y ORB, y construye un panorama de tres tomas.")
     r.caja("<strong>Sobre las fotografías.</strong> La actividad pide tomar 2 o 3 fotos con el teléfono. Como aquí no se contaba con ellas, las tres tomas se <strong>generaron a partir de una fotografía de calle real</strong> (Rivera, 2025; CC0): cada toma es la vista de una cámara que solo <em>gira</em> (−15° y +15° respecto de la central, como al hacer un panorama de pie), "
            "con un ángulo de visión de unos 56° por toma y un solape aproximado de 70 % entre tomas vecinas. Además, cada toma tiene una exposición distinta (×1.12, ×1.0 y ×0.85, imitando la exposición automática) y algo de ruido. "
@@ -33,7 +33,7 @@ def main():
     r.p("Las tres tomas comparten cerca del 70 % de la escena con la vecina. Se evitaron, como pide la actividad, los movimientos bruscos, los cambios extremos de iluminación y los objetos en movimiento (el único cambio de iluminación es el de exposición entre tomas).")
 
     r.h2("3. Parte 2. Observación de keypoints")
-    r.p("Se aplicó SIFT y ORB (SURF no está disponible en las distribuciones estándar de OpenCV por estar patentado). Se limitó cada detector a 3000 puntos por toma, de modo que <strong>el número total de puntos no dice cuál detector es más «productivo»</strong> (ambos llegan al límite en todas las tomas); "
+    r.p("Se aplicó SIFT (Lowe, 2004) y ORB (Rublee et al., 2011) con OpenCV (OpenCV, s. f.; FreeCodeCamp.org, 2021). SURF (Bay et al., 2008) no se usó: en OpenCV está en el módulo <code>nonfree</code> de <code>opencv-contrib</code>, que no viene en las distribuciones estándar por haber estado patentado. Se limitó cada detector a 3000 puntos por toma, de modo que <strong>el número total de puntos no dice cuál detector es más «productivo»</strong> (ambos llegan al límite en todas las tomas); "
         "lo informativo es <em>dónde</em> se ubican y cuántos resultan útiles después.")
     r.fig("figuras/fig2_keypoints.png", "Keypoints en cada toma: SIFT (arriba, círculos con tamaño y orientación) y ORB (abajo).", alto=110)
     r.fig("figuras/fig3_regiones_iluminacion.png", "Izquierda: keypoints SIFT por región en la toma central (cuadrícula de 4×6). Derecha: efecto de la iluminación sobre el número de keypoints y de correspondencias correctas al comparar la toma central con una versión más oscura o más clara de sí misma.")
@@ -97,6 +97,7 @@ def main():
         "Brown, M., &amp; Lowe, D. G. (2007). Automatic panoramic image stitching using invariant features. <em>International Journal of Computer Vision, 74</em>(1), 59–73. https://doi.org/10.1007/s11263-006-0002-3",
         "Burt, P. J., &amp; Adelson, E. H. (1983). A multiresolution spline with application to image mosaics. <em>ACM Transactions on Graphics, 2</em>(4), 217–236. https://doi.org/10.1145/245.247",
         "Fischler, M. A., &amp; Bolles, R. C. (1981). Random sample consensus: A paradigm for model fitting with applications to image analysis and automated cartography. <em>Communications of the ACM, 24</em>(6), 381–395. https://doi.org/10.1145/358669.358692",
+        "FreeCodeCamp.org. (2021). <em>Computer vision with Python and OpenCV</em> [Video]. YouTube. https://www.youtube.com/watch?v=oXlwWbU8l2o",
         "Lowe, D. G. (2004). Distinctive image features from scale-invariant keypoints. <em>International Journal of Computer Vision, 60</em>(2), 91–110. https://doi.org/10.1023/B:VISI.0000029664.99615.94",
         "OpenAI. (2026). <em>Actividad: Creación básica de un panorama</em> [Imagen generada con IA]. Material de la actividad, Visión computacional para imágenes y video. ChatGPT.",
         "OpenCV. (s. f.). <em>Feature detection and description</em>. OpenCV Documentation. https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html",

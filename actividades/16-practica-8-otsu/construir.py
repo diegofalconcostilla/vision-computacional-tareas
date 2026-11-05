@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
-from herramientas import cuaderno as cu  # noqa: E402
+from herramientas import cuaderno as cu, word  # noqa: E402
 from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
@@ -52,6 +52,7 @@ EJ = [
 # Experimentos de la actividad
 
 La actividad pide (1) **experimentar con imágenes de fondos y estilos distintos** y ver las limitaciones de un umbral único frente a Otsu, y (2) de forma opcional, **aplicar Otsu por ventanas** con el ejemplo de la hoja de papel.
+El marco teórico es el de la umbralización del capítulo 10 de Gonzalez y Woods (2018): umbral global, método de Otsu, umbral multinivel y umbral variable o local. El notebook base usa scikit-image (van der Walt et al., 2014); el mismo método está disponible en OpenCV con `cv2.threshold` y la bandera `THRESH_OTSU` (OpenCV, s. f.; Murzova & Seth, 2020) y en Mahotas con `mahotas.otsu` (GeeksforGeeks, 2021).
 
 1. [Herramientas: medida de eficacia de Otsu](#eta)
 2. [Un umbral único frente a Otsu](#unico): imágenes con distinta iluminación
@@ -151,7 +152,7 @@ plt.tight_layout(); plt.show()
 <a id="local"></a>
 ## 4. Opcional: Otsu por ventanas (umbral local)
 
-En lugar de un solo umbral, se calcula uno **por píxel** con el histograma de una ventana centrada en él (`rank.otsu`, ventana circular de radio $r$). Se prueba con la hoja de papel de la práctica (`data.page()`) y con la hoja sintética con sombras, donde se conoce la verdad. Se compara con el umbral global de Otsu y con dos métodos locales clásicos (Sauvola y Niblack).
+En lugar de un solo umbral, se calcula uno **por píxel** con el histograma de una ventana centrada en él (`rank.otsu` de scikit-image, ventana circular de radio $r$), una forma de umbral variable (Gonzalez & Woods, 2018, cap. 10). Se prueba con la hoja de papel de la práctica (`data.page()`) y con la hoja sintética con sombras, donde se conoce la verdad. Se compara con el umbral global de Otsu y con dos métodos locales clásicos: Niblack (1986) y Sauvola y Pietikäinen (2000).
 """),
     cu.code("""
 g = toma(0.6, sombra=True)
@@ -198,13 +199,15 @@ __CONCLUSION__
 
 ## Referencias
 
+- GeeksforGeeks. (2021, 29 de julio). *Mahotas - Otsu's method*. https://www.geeksforgeeks.org/mahotas-otsus-method/
+- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson. (Cap. 10.)
+- Liao, P.-S., Chen, T.-S., & Chung, P.-C. (2001). A fast algorithm for multilevel thresholding. *Journal of Information Science and Engineering, 17*(5), 713–727.
+- Murzova, A., & Seth, S. (2020, 5 de agosto). *Otsu's thresholding with OpenCV*. LearnOpenCV. https://learnopencv.com/otsu-thresholding-with-opencv/
+- Niblack, W. (1986). *An introduction to digital image processing*. Prentice Hall.
+- OpenCV. (s. f.). *Image thresholding*. OpenCV 4.x Documentation. https://docs.opencv.org/4.x/d7/d4d/tutorial_py_thresholding.html
 - Otsu, N. (1979). A threshold selection method from gray-level histograms. *IEEE Transactions on Systems, Man, and Cybernetics, 9*(1), 62–66. https://doi.org/10.1109/TSMC.1979.4310076
 - Sauvola, J., & Pietikäinen, M. (2000). Adaptive document image binarization. *Pattern Recognition, 33*(2), 225–236. https://doi.org/10.1016/S0031-3203(99)00055-2
-- Niblack, W. (1986). *An introduction to digital image processing*. Prentice Hall.
-- Liao, P.-S., Chen, T.-S., & Chung, P.-C. (2001). A fast algorithm for multilevel thresholding. *Journal of Information Science and Engineering, 17*(5), 713–727.
-- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson. (Cap. 10.)
 - van der Walt, S., Schönberger, J. L., Nunez-Iglesias, J., Boulogne, F., Warner, J. D., Yager, N., Gouillart, E., & Yu, T. (2014). scikit-image: Image processing in Python. *PeerJ, 2*, e453. https://doi.org/10.7717/peerj.453
-- Stanford Vision Lab. (s. f.). *Thresholding* [Tutorial]. https://ai.stanford.edu/~syyeung/cvweb/tutorial3.html
 - Imágenes: ver `LICENCIAS.md` (Wikimedia Commons: Stillwaterising, Arnatbio, Chaurasiya, Hellerhoff y Rivera) e imágenes de ejemplo de scikit-image (`data.camera`, `data.coins`, `data.page`). El documento de prueba se genera con texto propio.
 """),
 ]
@@ -237,26 +240,45 @@ TEXTOS = {
 - **Otsu resuelve el problema de elegir el umbral automáticamente** a partir del histograma: al bajar el brillo del documento el umbral fijo de 128 cayó a F1 = 0.12, mientras que Otsu se mantuvo en 0.87.
 - **Su límite es que asume dos clases separables por intensidad y una iluminación uniforme.** Falló con sombras (F1 = 0.20), con estructuras de más de dos clases (radiografía, resonancia) y con histogramas sin dos picos claros. La medida η del propio artículo orienta, pero no garantiza el éxito: con sombra siguió en 0.62.
 - **El Otsu por ventanas corrige la iluminación desigual**, con el costo de más cómputo y de un parámetro (el radio) que debe ser mayor que los detalles y las zonas de fondo. Con ventanas pequeñas produce ruido; **Sauvola** superó a Otsu local (0.846 frente a 0.728) al usar también la desviación estándar local.
-- Para varias clases existe multi-Otsu (incluido en el notebook base); para regiones de intensidad parecida hay que recurrir a otros métodos de segmentación (bordes, regiones, agrupamiento).
+- Para varias clases existe multi-Otsu (incluido en el notebook base; Liao et al., 2001); para regiones de intensidad parecida hay que recurrir a otros métodos de segmentación (bordes, regiones, agrupamiento).
 - **Limitaciones:** el documento y la sombra son sintéticos y se probó un solo patrón de sombra; los parámetros de Sauvola y Niblack no se ajustaron; la segmentación de las imágenes reales se evaluó de forma cualitativa.
 """,
 }
 
 
+TITULO = "Práctica 8. Algoritmo Otsu para segmentación"
+SUBTITULO = "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas"
+FECHA = "8/11/2026"
+BASE = AQUI / "enunciado" / "6_segmentation_otsu.ipynb"
+
+
 def main():
-    preparar_datos()
-    nb = cu.cargar(AQUI / "enunciado" / "6_segmentation_otsu.ipynb")
-    print("parches:", cu.parchear(nb))
     for c in EJ:
         if c.cell_type == "markdown":
             for k, v in TEXTOS.items():
                 c.source = c.source.replace(k, v)
-    cu.agregar(nb, EJ)
-    cu.ejecutar(nb, CODIGO, timeout=1500)
+    if "--sin-ejecutar" in sys.argv:
+        # reemplaza solo el texto de las celdas markdown agregadas; conserva las salidas ya ejecutadas
+        nb = cu.cargar(CODIGO / f"{NOMBRE}.ipynb")
+        n_base = next(i for i, c in enumerate(nb.cells)  # primera celda agregada (la copia pública no trae enunciado/)
+                      if c.cell_type == "markdown" and c.source.lstrip().startswith("# Experimentos de la actividad"))
+        for i, c in enumerate(EJ):
+            if c.cell_type == "markdown":
+                destino = nb.cells[n_base + i]
+                assert destino.cell_type == "markdown", (i, destino.source[:60])
+                destino.source = c.source
+        assert nb.cells[n_base].source.lstrip().startswith("# Experimentos de la actividad")
+    else:
+        preparar_datos()
+        nb = cu.cargar(BASE)
+        print("parches:", cu.parchear(nb))
+        cu.agregar(nb, EJ)
+        cu.ejecutar(nb, CODIGO, timeout=1500)
+        shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
     cu.formato_entrega(nb, inicio="# Experimentos de la actividad")  # sin negritas en las reflexiones + declaración de uso de IA
     cu.guardar(nb, CODIGO / f"{NOMBRE}.ipynb")
-    shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
-    pdf = cu.a_pdf(nb, AQUI / "Practica8_Otsu.pdf", "Práctica 8. Algoritmo Otsu para segmentación", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas", integrantes=EQUIPO, fecha="8/11/2026")
+    pdf = cu.a_pdf(nb, AQUI / "Practica8_Otsu.pdf", TITULO, SUBTITULO, integrantes=EQUIPO, fecha=FECHA)
+    word.notebook_a_docx([nb], AQUI / "Practica8_Otsu.docx", TITULO, SUBTITULO, **word.equipo(FECHA))
     n = zip_entrega(AQUI / "Practica8_Otsu.zip", AQUI, ["codigo", pdf.name])
     print("PDF", paginas_pdf(pdf), "páginas; zip con", n, "archivos")
 

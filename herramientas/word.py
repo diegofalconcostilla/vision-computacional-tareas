@@ -57,13 +57,8 @@ PRACTICAS = {
     "12-practica-6-canny": (["practica_6_canny"], "Practica6_Canny",
         "Práctica 6. Extracción de líneas con algoritmo de Canny", "Efecto de σ, del suavizado previo y del tipo de imagen",
         equipo("25/10/2026")),
-    "14-practica-7-harris-matching": (["practica_7a_harris", "practica_7b_matching"], "Practica7_Harris_y_matching",
-        "Práctica 7. Algoritmos de extracción de características",
-        "Parte A: Harris bajo cambios de iluminación, ángulo y escala · Parte B: Harris, ORB y SIFT en matching",
-        equipo("1/11/2026")),
-    "16-practica-8-otsu": (["practica_8_otsu"], "Practica8_Otsu",
-        "Práctica 8. Algoritmo Otsu para segmentación", "Umbral único frente a Otsu, imágenes de estilos distintos y Otsu por ventanas",
-        equipo("8/11/2026")),
+    # 14-practica-7-harris-matching: su construir.py arma el .docx (une las dos partes con una sola lista de referencias)
+    # 16-practica-8-otsu: su construir.py arma el .docx (python construir.py --sin-ejecutar)
 }
 
 

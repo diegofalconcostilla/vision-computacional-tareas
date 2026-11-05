@@ -1,17 +1,24 @@
-"""Construye la entrega de la Práctica 7 (Harris y matching de puntos de interés): dos notebooks + PDF combinado."""
+"""Construye la entrega de la Práctica 7 (Harris y matching de puntos de interés): dos notebooks + un solo PDF/Word
+(portada, parte A, parte B y una lista de referencias unificada).
+
+    python construir.py              # ejecuta los notebooks y arma la entrega
+    python construir.py --sin-ejecutar   # solo vuelve a armar PDF, Word y zip desde los notebooks de codigo/
+"""
+import copy
+import re
 import shutil
 import sys
 from pathlib import Path
 
 import cv2
 import numpy as np
-import pymupdf
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
 sys.path.insert(0, str(RAIZ))
 from herramientas import cuaderno as cu  # noqa: E402
 from herramientas import puntos as P  # noqa: E402
+from herramientas import word  # noqa: E402
 from herramientas.reporte import EQUIPO, paginas_pdf, zip_entrega  # noqa: E402
 
 COMP = RAIZ / "datos_compartidos"
@@ -45,9 +52,10 @@ EJ_H = [
     cu.md("""
 # Experimentos: el detector de Harris bajo distintas condiciones
 
+El detector de Harris (Harris & Stephens, 1988) busca los puntos donde la intensidad cambia en todas las direcciones a partir del tensor de estructura de los gradientes (Solem, 2012, cap. 2; Gonzalez & Woods, 2018); aquí se usa la versión de OpenCV (Bradski, 2000; OpenCV, s. f.).
 La actividad pide probar el detector con un objeto fotografiado bajo **distinta iluminación** y **distintos ángulos**. Como aquí no se dispone de fotos propias de cada condición, se parte de una fotografía real de un letrero (CC0, ver `LICENCIAS.md`)
 y se generan las demás vistas de forma **controlada**: los cambios de iluminación se simulan con brillo, gamma y ruido, y los de ángulo con la homografía exacta de un giro del plano del objeto, de la cámara o de la escala (`puntos.py`).
-Así se conoce la verdad y se puede medir la **repetibilidad**: de las esquinas detectadas en la imagen original, qué fracción reaparece (a ≤ 3 px) en la imagen transformada. Si se dispone de fotos propias, basta con reemplazar `data/letrero.jpg` y cargar cada toma como una condición adicional.
+Así se conoce la verdad y se puede medir la **repetibilidad** (Schmid et al., 2000): de las esquinas detectadas en la imagen original, qué fracción reaparece (a ≤ 3 px) en la imagen transformada. Si se dispone de fotos propias, basta con reemplazar `data/letrero.jpg` y cargar cada toma como una condición adicional.
 
 Contenido: [1. Condiciones](#cond) · [2. Parámetros de Harris](#param) · [3. Hallazgos](#hall)
 """),
@@ -126,10 +134,12 @@ __H1__
 
 ## Referencias
 
-- Harris, C., & Stephens, M. (1988). A combined corner and edge detector. En *Proceedings of the 4th Alvey Vision Conference* (pp. 147–151). Alvey Vision Club.
-- Schmid, C., Mohr, R., & Bauckhage, C. (2000). Evaluation of interest point detectors. *International Journal of Computer Vision, 37*(2), 151–172. https://doi.org/10.1023/A:1008199403446
-- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson.
 - Bradski, G. (2000). The OpenCV library. *Dr. Dobb's Journal of Software Tools, 25*(11), 120–123.
+- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson.
+- Harris, C., & Stephens, M. (1988). A combined corner and edge detector. En *Proceedings of the 4th Alvey Vision Conference* (pp. 147–151). Alvey Vision Club.
+- OpenCV. (s. f.). *Feature detection and description*. OpenCV 3.4 Documentation. https://docs.opencv.org/3.4/db/d27/tutorial_py_table_of_contents_feature2d.html
+- Schmid, C., Mohr, R., & Bauckhage, C. (2000). Evaluation of interest point detectors. *International Journal of Computer Vision, 37*(2), 151–172. https://doi.org/10.1023/A:1008199403446
+- Solem, J. E. (2012). *Programming computer vision with Python: Tools and algorithms for analyzing images*. O'Reilly Media.
 - Imágenes: ver `LICENCIAS.md` (Wikimedia Commons, M. Rivera, CC0). El tablero `chessboard.jpg` se genera por código.
 """),
 ]
@@ -139,10 +149,10 @@ EJ_M = [
     cu.md("""
 # Experimentos: qué tan buenos son los descriptores para el matching
 
-La actividad pide probar diferentes descriptores con variaciones de **iluminación** y **orientación**, y ver qué tan bien funciona el matching **con Harris por sí solo** o con otros como **SIFT** y **ORB**.
-Como las dos fotos de personas del notebook base (`elon_1`, `elon_2`) no se incluyeron, se usa una escena urbana real (CC0) y se generan vistas con transformación conocida (`puntos.py`), de modo que cada correspondencia se puede calificar como correcta o errónea.
+La actividad pide probar diferentes descriptores con variaciones de **iluminación** y **orientación**, y ver qué tan bien funciona el matching **con Harris por sí solo** (Harris & Stephens, 1988) o con otros como **SIFT** (Lowe, 2004) y **ORB** (Rublee et al., 2011), todos disponibles en OpenCV (OpenCV, s. f.; Solem, 2012, cap. 2).
+Como las dos fotos de personas del notebook base (`elon_1`, `elon_2`) no se incluyeron, se usa una escena urbana real (CC0) y se generan vistas con transformación conocida (`puntos.py`), de modo que cada correspondencia se puede calificar como correcta o errónea, como en la evaluación de descriptores de Mikolajczyk y Schmid (2005).
 
-Se comparan tres alternativas, todas con la misma prueba de razón de Lowe (0.8) y 1500 puntos como máximo:
+Se comparan tres alternativas, todas con la misma prueba de razón de Lowe (2004), con umbral de 0.8, y 1500 puntos como máximo; la homografía se estima con RANSAC (Fischler & Bolles, 1981):
 
 | Método | Detector | Descriptor | Distancia |
 |---|---|---|---|
@@ -211,12 +221,14 @@ __H2__
 
 ## Referencias
 
+- Domino Data Lab. (s. f.). *Feature extraction and image classification using deep neural networks*. Domino Blog. https://www.dominodatalab.com/blog/feature-extraction-and-image-classification-using-deep-neural-networks
+- Fischler, M. A., & Bolles, R. C. (1981). Random sample consensus: A paradigm for model fitting with applications to image analysis and automated cartography. *Communications of the ACM, 24*(6), 381–395. https://doi.org/10.1145/358669.358692
 - Harris, C., & Stephens, M. (1988). A combined corner and edge detector. En *Proceedings of the 4th Alvey Vision Conference* (pp. 147–151). Alvey Vision Club.
 - Lowe, D. G. (2004). Distinctive image features from scale-invariant keypoints. *International Journal of Computer Vision, 60*(2), 91–110. https://doi.org/10.1023/B:VISI.0000029664.99615.94
-- Rublee, E., Rabaud, V., Konolige, K., & Bradski, G. (2011). ORB: An efficient alternative to SIFT or SURF. En *2011 International Conference on Computer Vision* (pp. 2564–2571). IEEE. https://doi.org/10.1109/ICCV.2011.6126544
-- Fischler, M. A., & Bolles, R. C. (1981). Random sample consensus: A paradigm for model fitting with applications to image analysis and automated cartography. *Communications of the ACM, 24*(6), 381–395. https://doi.org/10.1145/358669.358692
 - Mikolajczyk, K., & Schmid, C. (2005). A performance evaluation of local descriptors. *IEEE Transactions on Pattern Analysis and Machine Intelligence, 27*(10), 1615–1630. https://doi.org/10.1109/TPAMI.2005.188
-- OpenCV. (s. f.). *Feature detection and description*. https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html
+- OpenCV. (s. f.). *Feature detection and description*. OpenCV 3.4 Documentation. https://docs.opencv.org/3.4/db/d27/tutorial_py_table_of_contents_feature2d.html
+- Rublee, E., Rabaud, V., Konolige, K., & Bradski, G. (2011). ORB: An efficient alternative to SIFT or SURF. En *2011 International Conference on Computer Vision* (pp. 2564–2571). IEEE. https://doi.org/10.1109/ICCV.2011.6126544
+- Solem, J. E. (2012). *Programming computer vision with Python: Tools and algorithms for analyzing images*. O'Reilly Media.
 - Imágenes: ver `LICENCIAS.md` (Wikimedia Commons, M. Rivera, CC0).
 """),
 ]
@@ -231,7 +243,7 @@ TEXTO = {"H1": """
 - Con un giro de 30° en el plano de la imagen la repetibilidad es de 69.9 %. En teoría Harris es invariante a rotación (el determinante y la traza del tensor de estructura no cambian al girar), así que la pérdida se debe al remuestreo con interpolación, a que 22 de las 241 esquinas salen del encuadre y a que la posición se mide a ±3 px.
 - Con una escala de 0.6× cae a **34.9 %**: Harris **no es invariante a la escala**. Al reducir la imagen, una esquina se convierte en una curva suave dentro de la misma ventana. Esa es la razón de que SIFT trabaje en un espacio de escalas.
 
-**Parámetros.** Aumentar `blockSize` mejora la repetibilidad frente al giro (63.2 % con 2, 69.9 % con 3, 74.6 % con 5 y 77.5 % con 7, con k = 0.04) y algo frente a la poca luz (94.3 % → 98.0 %), pero reduce el número de esquinas totales (212 → 201) y suaviza su localización. `k` (0.04 frente a 0.06) tiene un efecto pequeño y sin patrón consistente (diferencias de unos pocos puntos). Frente a la escala ningún ajuste ayuda (32–39 %).
+**Parámetros.** Aumentar `blockSize` mejora la repetibilidad frente al giro (63.2 % con 2, 69.9 % con 3, 74.6 % con 5 y 77.5 % con 7, con k = 0.04) y algo frente a la poca luz (94.3 % → 98.0 %), pero reduce el número de esquinas totales (241 con 3 frente a 201 con 7) y suaviza su localización. `k` (0.04 frente a 0.06) tiene un efecto pequeño y sin patrón consistente (diferencias de unos pocos puntos). Frente a la escala ningún ajuste ayuda (32–39 %).
 
 **Limitación.** Las vistas son sintéticas a partir de una sola fotografía (sin paralaje, sombras ni reflejos reales). Con fotos propias del mismo objeto bajo el sol y en penumbra, y desde varios ángulos, se espera un comportamiento similar, con las diferencias que traigan las sombras y los reflejos.
 """, "H2": """
@@ -245,16 +257,39 @@ TEXTO = {"H1": """
 - Con una **perspectiva moderada (yaw 25°)** hasta el parche de Harris sirve (219/227, 96.5 %), pero con menos correspondencias que ORB (522) o SIFT (546).
 
 **Precisión geométrica y tiempo.**
-- SIFT es el más preciso: el error de la homografía estimada (RANSAC) no supera 0.51 px en ninguna condición. ORB llega a errores de entre 0.05 y 7.6 px (el peor caso, con la perspectiva de 25°). Con solo 4 o 5 correspondencias, la homografía de Harris no tiene sentido (errores de cientos de píxeles).
-- En tiempo de detección (dos imágenes de 1280×720, un solo equipo y varias ejecuciones), ORB fue el más rápido (unos 20–40 ms), Harris quedó en un punto intermedio (45–110 ms) y SIFT fue el más lento (105–220 ms), varias veces más que ORB (entre 3 y 8 veces según la condición). Los valores exactos cambian de una ejecución a otra, pero el orden se mantuvo.
+- SIFT es el más preciso: el error de la homografía estimada (RANSAC) no supera 0.51 px en ninguna condición. ORB llega a errores de hasta 7.59 px (el peor caso, con la perspectiva de 25°). Con solo 4 o 5 correspondencias, la homografía de Harris no tiene sentido (errores de cientos de píxeles).
+- En tiempo de detección (dos imágenes de 1280×720, en un solo equipo), ORB fue el más rápido (17–30 ms), Harris quedó en un punto intermedio (43–92 ms) y SIFT fue el más lento (103–128 ms), entre 3.6 y 7.5 veces más que ORB según la condición. Los valores exactos cambian de una ejecución a otra, pero el orden se mantuvo.
 
-**Conclusiones.** (1) Harris detecta *dónde* hay puntos estables; para emparejar hace falta un descriptor, y con uno ingenuo (píxeles del parche) no soporta rotación ni escala. (2) SIFT ofrece la mejor precisión y la mayor robustez, a cambio de tiempo de cómputo; ORB es una alternativa mucho más rápida con precisión ligeramente menor, salvo con saturación. (3) Ninguno resolvió sin errores la saturación de luces. (4) Los resultados dependen de la escena y de la prueba de razón (0.8); son de una sola escena con vistas sintéticas y deberían complementarse con fotos reales propias.
+**Conclusiones.** (1) Harris detecta *dónde* hay puntos estables; para emparejar hace falta un descriptor, y con uno ingenuo (píxeles del parche) no soporta rotación ni escala. (2) SIFT ofrece la mejor precisión y la mayor robustez, a cambio de tiempo de cómputo; ORB es una alternativa mucho más rápida con precisión ligeramente menor, salvo con saturación. (3) Ninguno resolvió sin errores la saturación de luces. (4) Los resultados dependen de la escena y de la prueba de razón (0.8); son de una sola escena con vistas sintéticas y deberían complementarse con fotos reales propias. (5) Los mismos descriptores locales sirven también como características para clasificar imágenes, aunque hoy compiten con las que aprenden las redes neuronales profundas (Domino Data Lab, s. f.).
 """}
 
 
-def armar(nb_path, nombre, ej, marcadores, parches, titulo, sub, pdf_nombre, declaracion):
+# Referencias de las dos partes en una sola lista (orden alfabético) para el PDF y el Word; cada notebook conserva la suya.
+REFERENCIAS = """## Referencias
+
+- Bradski, G. (2000). The OpenCV library. *Dr. Dobb's Journal of Software Tools, 25*(11), 120–123.
+- Domino Data Lab. (s. f.). *Feature extraction and image classification using deep neural networks*. Domino Blog. https://www.dominodatalab.com/blog/feature-extraction-and-image-classification-using-deep-neural-networks
+- Fischler, M. A., & Bolles, R. C. (1981). Random sample consensus: A paradigm for model fitting with applications to image analysis and automated cartography. *Communications of the ACM, 24*(6), 381–395. https://doi.org/10.1145/358669.358692
+- Gonzalez, R. C., & Woods, R. E. (2018). *Digital image processing* (4.ª ed.). Pearson.
+- Harris, C., & Stephens, M. (1988). A combined corner and edge detector. En *Proceedings of the 4th Alvey Vision Conference* (pp. 147–151). Alvey Vision Club.
+- Lowe, D. G. (2004). Distinctive image features from scale-invariant keypoints. *International Journal of Computer Vision, 60*(2), 91–110. https://doi.org/10.1023/B:VISI.0000029664.99615.94
+- Mikolajczyk, K., & Schmid, C. (2005). A performance evaluation of local descriptors. *IEEE Transactions on Pattern Analysis and Machine Intelligence, 27*(10), 1615–1630. https://doi.org/10.1109/TPAMI.2005.188
+- OpenCV. (s. f.). *Feature detection and description*. OpenCV 3.4 Documentation. https://docs.opencv.org/3.4/db/d27/tutorial_py_table_of_contents_feature2d.html
+- Rublee, E., Rabaud, V., Konolige, K., & Bradski, G. (2011). ORB: An efficient alternative to SIFT or SURF. En *2011 International Conference on Computer Vision* (pp. 2564–2571). IEEE. https://doi.org/10.1109/ICCV.2011.6126544
+- Schmid, C., Mohr, R., & Bauckhage, C. (2000). Evaluation of interest point detectors. *International Journal of Computer Vision, 37*(2), 151–172. https://doi.org/10.1023/A:1008199403446
+- Solem, J. E. (2012). *Programming computer vision with Python: Tools and algorithms for analyzing images*. O'Reilly Media.
+- Imágenes: ver `LICENCIAS.md` (Wikimedia Commons, M. Rivera, CC0). El tablero `chessboard.jpg` se genera por código.
+"""
+
+TITULO = "Práctica 7. Algoritmos de extracción de características"
+SUBTITULO = "Parte A: Harris bajo cambios de iluminación, ángulo y escala · Parte B: Harris, ORB y SIFT en matching"
+FECHA = "1/11/2026"
+NB_A, NB_B = CODIGO / "practica_7a_harris.ipynb", CODIGO / "practica_7b_matching.ipynb"
+
+
+def armar(nb_path, ruta, ej, marcadores, parches, declaracion):
     nb = cu.cargar(nb_path)
-    print(nombre, "parches:", cu.parchear(nb))
+    print(ruta.stem, "parches:", cu.parchear(nb))
     parches(nb)
     for c in ej:
         if c.cell_type == "markdown":
@@ -263,8 +298,24 @@ def armar(nb_path, nombre, ej, marcadores, parches, titulo, sub, pdf_nombre, dec
     cu.agregar(nb, ej)
     cu.ejecutar(nb, CODIGO, timeout=1500)
     cu.formato_entrega(nb, inicio="# Experimentos", declaracion=declaracion)  # la declaración de uso de IA va solo al final (parte B)
-    cu.guardar(nb, CODIGO / f"{nombre}.ipynb")
-    return cu.a_pdf(nb, AQUI / pdf_nombre, titulo, sub, integrantes=EQUIPO, fecha="1/11/2026")
+    cu.guardar(nb, ruta)
+
+
+def unir():
+    """Un solo documento: parte A, parte B, referencias unificadas y declaración de uso de IA (sin volver a ejecutar)."""
+    unido = copy.deepcopy(cu.cargar(NB_A))
+    unido.cells.insert(0, cu.md("# Parte A. Detector de esquinas de Harris"))
+    unido.cells.append(cu.md('<div style="break-before:page"></div>\n\n# Parte B. Matching de puntos de interés'))
+    unido.cells.extend(copy.deepcopy(cu.cargar(NB_B).cells))
+    celdas = []
+    for c in unido.cells:
+        if c.cell_type == "markdown":
+            if "## Declaración y uso de IA" in c.source:
+                continue
+            c.source = re.sub(r"\n*## Referencias\n.*", "", c.source, flags=re.S)  # cada parte traía su propia lista
+        celdas.append(c)
+    unido.cells = celdas + [cu.md(REFERENCIAS), cu.md(cu.DECLARACION_IA)]
+    return unido
 
 
 def parches_harris(nb):
@@ -277,16 +328,14 @@ def parches_matching(nb):
 
 
 def main():
-    preparar_datos()
-    shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
-    p1 = armar(AQUI / "enunciado" / "7_harris_edge_corner_detection.ipynb", "practica_7a_harris", EJ_H, {"__H1__": TEXTO["H1"]}, parches_harris,
-               "Práctica 7 (parte A). Detector de esquinas de Harris", "Comportamiento bajo cambios de iluminación, ángulo y escala", "_p7a.pdf", False)
-    p2 = armar(AQUI / "enunciado" / "9_image_matching.ipynb", "practica_7b_matching", EJ_M, {"__H2__": TEXTO["H2"]}, parches_matching,
-               "Práctica 7 (parte B). Matching de puntos de interés", "Harris, ORB y SIFT con variaciones de iluminación y orientación", "_p7b.pdf", True)
-    salida = AQUI / "Practica7_Harris_y_matching.pdf"
-    doc = pymupdf.open(p1)
-    doc.insert_pdf(pymupdf.open(p2))
-    doc.save(salida)
+    if "--sin-ejecutar" not in sys.argv:
+        preparar_datos()
+        shutil.copy(COMP / "LICENCIAS.md", CODIGO / "LICENCIAS.md")
+        armar(AQUI / "enunciado" / "7_harris_edge_corner_detection.ipynb", NB_A, EJ_H, {"__H1__": TEXTO["H1"]}, parches_harris, False)
+        armar(AQUI / "enunciado" / "9_image_matching.ipynb", NB_B, EJ_M, {"__H2__": TEXTO["H2"]}, parches_matching, True)
+    unido = unir()
+    salida = cu.a_pdf(unido, AQUI / "Practica7_Harris_y_matching.pdf", TITULO, SUBTITULO, integrantes=EQUIPO, fecha=FECHA)
+    word.notebook_a_docx([unido], AQUI / "Practica7_Harris_y_matching.docx", TITULO, SUBTITULO, **word.equipo(FECHA))
     n = zip_entrega(AQUI / "Practica7_Harris_y_matching.zip", AQUI, ["codigo", salida.name])
     print("PDF", paginas_pdf(salida), "páginas; zip con", n, "archivos")
 
